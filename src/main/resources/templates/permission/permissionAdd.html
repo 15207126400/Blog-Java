@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<!--suppress ThymeleafVariablesResolveInspection -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:include="common :: commonHerd" />
+</head>
+<body>
+    <div id="wrapper">
+        <!--右侧内容-->
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                位置 : <a href="/permission/permissionList">权限信息列表</a> / 权限新增页面
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <form id="formtest" method="post" onsubmit="return false" action="##" permission="form">
+                                            <input name="op" type="hidden" th:value="1">
+                                            <div class="form-group">
+                                                <label>权限类型</label>
+                                                <input class="form-control" name="type" type="text" placeholder="请输入权限类型">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>权限名</label>
+                                                <input class="form-control" name="name" type="text" placeholder="请输入权限名">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>权限标识</label>
+                                                <input class="form-control" name="permission" type="text" placeholder="请输入权限标识">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>路由路径</label>
+                                                <input class="form-control" name="url" type="text" placeholder="请输入路由路径">
+                                            </div>
+                                            <button type="submit" class="btn btn-default" onclick="sendAjax()">提交</button>
+                                            <button type="reset" class="btn btn-default">重置</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script th:inline="javascript">
+
+    function sendAjax(){
+
+        $.ajax({
+            url: "/permission/insertOrUpdate",
+            type:"post",
+            dataType:"json",
+            data: $('#formtest').serialize(),
+            async: false ,
+            success: function (data) {
+                if(data.status == 200){
+                    alert("操作成功");
+                    location.href = "/permission/permissionList";
+                } else {
+                    alert("操作失败");
+                }
+            }
+        });
+    }
+</script>
+</html>

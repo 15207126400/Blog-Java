@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<!--suppress ThymeleafVariablesResolveInspection -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link href="http://www.jq22.com/jquery/bootstrap-3.3.4.css" rel="stylesheet">
+    <link th:href="@{/css/font-awesome.css}" rel="stylesheet" />
+    <link th:href="@{/js/morris/morris-0.4.3.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/custom-styles.css}" rel="stylesheet" />
+    <link th:href="@{/js/dataTables/dataTables.bootstrap.css}" rel="stylesheet" />
+    <link th:href="@{/css/common.css}" rel="stylesheet" />
+
+    <script th:src="@{/js/jquery-1.10.2.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/jquery.metisMenu.js}"></script>
+    <script th:src="@{/js/bootstrap-treeview.js}"></script>
+    <script th:src="@{/js/morris/raphael-2.1.0.min.js}"></script>
+    <script th:src="@{/js/morris/morris.js}"></script>
+    <script th:src="@{/js/custom-scripts.js}"></script>
+    <script th:src="@{/js/dataTables/jquery.dataTables.js}"></script>
+    <script th:src="@{/js/dataTables/dataTables.bootstrap.js}"></script>
+</head>
+<body>
+    <div id="wrapper">
+        <!--右侧内容-->
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                位置 : <a href="/role/roleList">角色信息列表</a> / 角色编辑页面
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <form id="formtest" method="post" onsubmit="return false" action="##" role="form">
+                                            <input name="op" type="hidden" th:value="2">
+                                            <input id="id" name="id" type="hidden" th:value="${role.id}">
+                                            <div class="form-group">
+                                                <label>角色名</label>
+                                                <input class="form-control" name="name" type="text" placeholder="请输入角色名" th:value="${role.name}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>角色描述</label>
+                                                <input class="form-control" name="description" type="text" placeholder="请输入角色描述" th:value="${role.description}">
+                                            </div>
+                                            <input class="form-control" id="permission_ids" name="permission_ids" type="hidden">
+                                            <!--树结构菜单-->
+                                            <div id="tree" name="tree" class=""></div>
+                                            <button type="submit" class="btn btn-default" onclick="sendAjax()">提交</button>
+                                            <button type="reset" class="btn btn-default">重置</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script th:inline="javascript">
+
+    $(function(){
+        var jsonData = [[${jsonData}]];
+        //console.log(JSON.stringify(jsonData))
+
+        $('#tree').treeview({
+            data: JSON.stringify(jsonData),
+            showIcon: true,
+            showCheckbox: true,
+            highlightSelected: false,
+            levels: 1,
+            checkboxes: true,
+            onNodeChecked: function(event, node) { //选中节点
+                var selectNodes = getChildNodeIdArr(node); //获取所有子节点
+                if (selectNodes) { //子节点不为空，则选中所有子节点
+                    $('#tree').treeview('checkNode', [selectNodes, { silent: true }]);
+                }
+                var parentNode = $("#tree").treeview("getNode", node.parentId);
+                setParentNodeCheck(node);
+            },
+            onNodeUnchecked: function(event, node) { //取消选中节点
+                // 取消父节点 子节点取消
+                var selectNodes = setChildNodeUncheck(node); //获取未被选中的子节点
+                var childNodes = getChildNodeIdArr(node);    //获取所有子节点
+                if (selectNodes && selectNodes.length==0) { //有子节点且未被选中的子节点数目为0，则取消选中所有子节点
+                    console.log("反选");
+                    $('#tree').treeview('uncheckNode', [childNodes, { silent: true }]);
+                }
+                // 取消节点 父节点取消
+                var parentNode = $("#tree").treeview("getNode", node.parentId);  //获取父节点
+                var selectNodes = getChildNodeIdArr(node);
+                setParentNodeCheck(node);
+            }
+        });
+
+        // 选中父节点时，选中所有子节点
+        function getChildNodeIdArr(node) {
+            var ts = [];
+            if (node.nodes) {
+                for (x in node.nodes) {
+                    ts.push(node.nodes[x].nodeId);
+                    if (node.nodes[x].nodes) {
+                        var getNodeDieDai = getChildNodeIdArr(node.nodes[x]);
+                        for (j in getNodeDieDai) {
+                            ts.push(getNodeDieDai[j]);
+                        }
+                    }
+                }
+            } else {
+                ts.push(node.nodeId);
+            }
+            return ts;
+        }
+
+        // 选中所有子节点时，选中父节点 取消子节点时取消父节点
+        function setParentNodeCheck(node) {
+            var parentNode = $("#tree").treeview("getNode", node.parentId);
+            if (parentNode.nodes) {
+                var checkedCount = 0;
+                for (x in parentNode.nodes) {
+                    if (parentNode.nodes[x].state.checked) {
+                        checkedCount ++;
+                    } else {
+                        break;
+                    }
+                }
+                if (checkedCount == parentNode.nodes.length) {  //如果子节点全部被选 父全选
+                    $("#tree").treeview("checkNode", parentNode.nodeId);
+                    setParentNodeCheck(parentNode);
+                }else {   //如果子节点未全部被选 父未全选
+                    $('#tree').treeview('uncheckNode', parentNode.nodeId);
+                    setParentNodeCheck(parentNode);
+                }
+            }
+        }
+
+        // 取消父节点时 取消所有子节点
+        function setChildNodeUncheck(node) {
+            if (node.nodes) {
+                var ts = [];    //当前节点子集中未被选中的集合
+                for (x in node.nodes) {
+                    if (!node.nodes[x].state.checked) {
+                        ts.push(node.nodes[x].nodeId);
+                    }
+                    if (node.nodes[x].nodes) {
+                        var getNodeDieDai = node.nodes[x];
+                        console.log(getNodeDieDai);
+                        for (j in getNodeDieDai) {
+                            if (!getNodeDieDai.nodes[x].state.checked) {
+                                ts.push(getNodeDieDai[j]);
+                            }
+                        }
+                    }
+                }
+            }
+            return ts;
+        }
+    })
+
+    //提交请求
+    function sendAjax(){
+        //获取权限勾选项id
+        var checkList = $('#tree').treeview('getChecked');
+        //console.log(checkList);
+        var arr = []
+        for (var i=0; i < checkList.length; i++) {
+            if(checkList[i].tags > 0){
+                arr.push(checkList[i].tags)
+            }
+        }
+        $('#permission_ids').val(arr);
+        console.log($('#permission_ids').val());
+
+        $.ajax({
+            url: "/role/insertOrUpdate",
+            type:"post",
+            dataType:"json",
+            data: $('#formtest').serialize(),
+            async: true ,
+            success: function (data) {
+                if(data.status == 200){
+                    alert("操作成功");
+                    location.href = "/role/roleList";
+                } else {
+                    alert("操作失败");
+                }
+            }
+        });
+    }
+
+</script>
+</html>

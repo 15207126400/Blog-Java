@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<!--suppress ThymeleafVariablesResolveInspection -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:include="common :: commonHerd" />
+</head>
+<div id="wrapper">
+    <div id="page-wrapper">
+        <div id="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading app-row-between-layout">
+                            <div>
+                                位置 : 日志信息列表
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <!--表头部分-->
+                                    <thead>
+                                    <tr>
+                                        <th>编号</th>
+                                        <th>操作用户</th>
+                                        <th>操作记录</th>
+                                        <th>ip地址</th>
+                                        <th>所在地区</th>
+                                        <th>浏览器</th>
+                                        <th>操作系统</th>
+                                        <th>操作时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <!--数据-->
+                                    <tbody>
+                                    <tr th:each="log : ${logs}">
+                                        <td th:text="${log.id}"></td>
+                                        <td th:text="${log.username}"></td>
+                                        <td th:text="${log.operation}"></td>
+                                        <td th:text="${log.ip}"></td>
+                                        <td th:text="${log.address}"></td>
+                                        <td th:text="${log.browser}"></td>
+                                        <td th:text="${log.system}"></td>
+                                        <td th:text="${#dates.format(log.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                        <td>
+                                            <a href="javascript:void(0);" th:onclick="'javascript:delData('+${log.id}+')'">删除</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    //删除
+    function delData(id){
+        if(confirm("确定要删除吗?")){
+            $.ajax({
+                url: "/log/logDel",
+                type:"post",
+                dataType:"json",
+                data: {"id":id},
+                success: function (data) {
+                    if(data.status == 200){
+                        alert("操作成功");
+                        location.href = "/log/logList";
+                    } else {
+                        alert("操作失败");
+                    }
+                }
+            });
+        }
+    }
+$(function(){
+    $('#dataTables-example').dataTable({
+        "aaSorting": [],        //禁用插件默认排序
+        //"serverSide": true,	//启用服务器端分页
+        //"searching": false,	//禁用原生搜索
+        "pageLength": 10,       //首次加载的数据条数
+        "oLanguage": {          //国际化设置
+            "sProcessing": "处理中...",
+            "sLengthMenu": "每页 _MENU_ 项",
+            "sZeroRecords": "没有匹配结果",
+            "sInfo": "从 _START_ 到  _END_ 条记录 总记录数为 _TOTAL_ 条",
+            "sInfoEmpty": "当前显示第 0 至 0 项，共 0 项",
+            "sSearch": "搜索:",
+            "sEmptyTable": "表中数据为空",
+            "sLoadingRecords": "载入中...",
+            "oPaginate": {
+                "sFirst": "第一页",
+                "sPrevious": "上一页",
+                "sNext": "下一页",
+                "sLast": "最后一页"
+            }
+        }
+    });
+})
+
+</script>
+</html>

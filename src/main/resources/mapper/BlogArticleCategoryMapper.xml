@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ivan.blog.dao.BlogArticleCategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.ivan.blog.model.BlogArticleCategory" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="category_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="article_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, category_id, article_id
+  </sql>
+
+
+  <!--批量创建文章与分类关联关系-->
+  <insert id="insertBatch">
+    insert into blog_article_category
+    (category_id, article_id)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+      (
+      #{item}, #{articleId}
+      )
+    </foreach>
+  </insert>
+
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ivan.blog.dao.BlogCategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.ivan.blog.model.BlogCategory" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="number" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, number, create_time, update_time
+  </sql>
+
+  <select id="selectCategoryByArticel" resultType="com.ivan.blog.model.BlogCategory">
+    select bc.* FROM blog_category bc
+    left join blog_article_category b on b.category_id = bc.id
+    left join blog_article a on a.id = b.article_id
+    where a.id = #{id}
+  </select>
+
+</mapper>

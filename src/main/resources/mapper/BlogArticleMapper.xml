@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ivan.blog.dao.BlogArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.ivan.blog.model.BlogArticle" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="img" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="title" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="summary" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="is_top" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="traffic" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, img, title, summary, is_top, traffic, update_time
+  </sql>
+
+  <sql id="Join_Column_List">
+    ba.id, ba.img, ba.title, ba.summary, ba.is_top, ba.traffic, ba.create_time, ba.update_time
+  </sql>
+
+  <select id="selectListByCategory" resultType="com.ivan.blog.model.dto.BlogArticleDTO">
+    select <include refid="Join_Column_List"/>
+    from blog_article ba
+    inner join blog_article_category bac on ba.id = bac.article_id
+    inner join blog_category bc on bac.category_id = bc.id
+    where bc.id = #{categoryId}
+    order by ba.is_top
+  </select>
+
+</mapper>

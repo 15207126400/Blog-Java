@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<!--suppress ThymeleafVariablesResolveInspection -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:include="common :: commonHerd" />
+</head>
+<body>
+    <div id="wrapper">
+        <!--右侧内容-->
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                位置 : <a href="/comment/commentList">评论信息列表</a> / 评论回复页面
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <form id="formtest" method="post" onsubmit="return false" action="##" comment="form">
+                                            <input name="parentId" type="hidden" th:value="${comment.id}">
+                                            <input name="name" type="hidden" value="Ivan">
+                                            <input name="avatarUrl" type="hidden" value="https://avatars0.githubusercontent.com/u/32918639?v=4">
+                                            <input name="articleId" type="hidden" th:value="${comment.articleId}">
+                                            <div class="form-group">
+                                                <label>评论文章</label>
+                                                <input class="form-control" type="text" th:value="${comment.articleTitle}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>评论信息</label>
+                                                <input class="form-control" type="text" th:value="${comment.content}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>回复</label>
+                                                <input class="form-control" name="content" type="text">
+                                            </div>
+                                            <button type="submit" class="btn btn-default" onclick="sendAjax()">提交</button>
+                                            <button type="reset" class="btn btn-default">重置</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script th:inline="javascript">
+
+    function sendAjax(){
+
+        $.ajax({
+            url: "/comment/reply",
+            type:"post",
+            dataType:"json",
+            data: $('#formtest').serialize(),
+            async: false ,
+            success: function (data) {
+                if(data.status == 200){
+                    alert("操作成功");
+                    location.href = "/comment/commentList";
+                } else {
+                    alert("操作失败");
+                }
+            }
+        });
+    }
+</script>
+</html>

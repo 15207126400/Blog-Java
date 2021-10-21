@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<!--suppress ThymeleafVariablesResolveInspection -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ivan | 博客管理系统</title>
+    <link rel="icon" href="http://www.ivan.group/files/blog/avg.jpg">
+
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+    <link th:href="@{/css/font-awesome.css}" rel="stylesheet" />
+    <link th:href="@{/js/morris/morris-0.4.3.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/custom-styles.css}" rel="stylesheet" />
+    <link th:href="@{/js/dataTables/dataTables.bootstrap.css}" rel="stylesheet" />
+    <link th:href="@{/css/common.css}" rel="stylesheet" />
+
+    <script th:src="@{/js/jquery-1.10.2.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/jquery.metisMenu.js}"></script>
+    <script th:src="@{/js/morris/raphael-2.1.0.min.js}"></script>
+    <script th:src="@{/js/morris/morris.js}"></script>
+    <script th:src="@{/js/custom-scripts.js}"></script>
+    <script th:src="@{/js/dataTables/jquery.dataTables.js}"></script>
+    <script th:src="@{/js/dataTables/dataTables.bootstrap.js}"></script>
+</head>
+<div id="wrapper">
+    <div id="page-wrapper">
+        <div id="page-inner">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="page-header">
+                        平台概况 <small>Platform Overview</small>
+                    </h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 col-sm-12 col-xs-12">
+                    <div class="panel panel-primary text-center no-boder bg-color-green">
+                        <div class="panel-body">
+                            <img class="top-img" src="http://ivan.group/files/upload/user.png" />
+                            <h3 th:text="${blogBackOv.userCount}"></h3>
+                        </div>
+                        <div class="panel-footer back-footer-green">
+                            用户
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-12 col-xs-12">
+                    <div class="panel panel-primary text-center no-boder bg-color-blue">
+                        <div class="panel-body">
+                            <img class="top-img" src="http://ivan.group/files/upload/role.png" />
+                            <h3 th:text="${blogBackOv.roleCount}"></h3>
+                        </div>
+                        <div class="panel-footer back-footer-blue">
+                            角色
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-12 col-xs-12">
+                    <div class="panel panel-primary text-center no-boder bg-color-red">
+                        <div class="panel-body">
+                            <img class="top-img" src="http://ivan.group/files/upload/permiss.png" />
+                            <h3 th:text="${blogBackOv.permissionCount}"></h3>
+                        </div>
+                        <div class="panel-footer back-footer-red">
+                            权限
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-12 col-xs-12">
+                    <div class="panel panel-primary text-center no-boder bg-color-brown">
+                        <div class="panel-body">
+                            <img class="top-img" src="http://ivan.group/files/upload/log.png" />
+                            <h3 th:text="${blogBackOv.logCount}"></h3>
+                        </div>
+                        <div class="panel-footer back-footer-brown">
+                            日志
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--网站访问量-->
+            <div class="row">
+                <div class="col-md-9 col-sm-12 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading app-row-between-layout">
+                            网站访问量
+                            <div class="app-row-start-left">
+                                访问总量:
+                                <h5 th:text="${totalCount}"></h5>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="morris-line-chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--博客概况-->
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h5>博客概况</h5>
+                        </div>
+                        <div class="panel-body">
+                            <div id="morris-donut-chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .top-img{
+        width: 50px;
+        height: 50px;
+    }
+</style>
+<script th:inline="javascript">
+
+    var dateList = [[${dateList}]];
+
+    //访问量(线图)
+    Morris.Line({
+        element: 'morris-line-chart',
+        data: [
+            {y: dateList[0].date,a: dateList[0].count},
+            {y: dateList[1].date,a: dateList[1].count},
+            {y: dateList[2].date,a: dateList[2].count},
+            {y: dateList[3].date,a: dateList[3].count},
+            {y: dateList[4].date,a: dateList[4].count},
+            {y: dateList[5].date,a: dateList[5].count},
+            {y: dateList[6].date,a: dateList[6].count}
+        ],
+        barColors: ['#00a65a', '#f56954'],
+        hoverFillColor: '#00a65a',
+        gridTextSize: 10,
+        xkey: 'y',
+        ykeys: ['a'],
+        units: '次',
+        labels: ['访问量'],
+        xLabelAngle: 20
+        //smooth: false         //禁用线条平滑
+    });
+
+    //访问量(柱图)
+    Morris.Bar({
+        element: 'morris-bar-chart',
+        data: [
+            {y: dateList[0].date,a: dateList[0].count},
+            {y: dateList[1].date,a: dateList[1].count},
+            {y: dateList[2].date,a: dateList[2].count},
+            {y: dateList[3].date,a: dateList[3].count},
+            {y: dateList[4].date,a: dateList[4].count},
+            {y: dateList[5].date,a: dateList[5].count},
+            {y: dateList[6].date,a: dateList[6].count}
+        ],
+        lineWidth: ['10px'],
+        barColors: ['#508695', '#f56954'],
+        hoverFillColor: '#00a65a',
+        gridTextSize: 10,
+        smooth: false,
+        xkey: 'y',
+        ykeys: ['a'],
+        ymax: 'auto 100',
+        units: '次',
+        labels: ['访问量'],
+        hideHover: 'true',
+        resize: true
+    })
+
+    //数据统计
+    var blogOv = [[${blogOv}]]
+
+    //博客概览
+    Morris.Donut({
+        element: 'morris-donut-chart',
+        data: [{
+            label: "文章",
+            value: blogOv.articleCount
+        }, {
+            label: "标签",
+            value: blogOv.tagsCount
+        }, {
+            label: "评论",
+            value: blogOv.commontCount
+        }],
+        resize: true,
+        colors: ["#3c8dbc", "#f56954", "#00a65a"],
+        //hideHover: true
+    });
+</script>
+</html>
