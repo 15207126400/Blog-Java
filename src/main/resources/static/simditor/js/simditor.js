@@ -4535,8 +4535,8 @@ ImageButton = (function(superClass) {
           }
         }
         if (result.success === false) {
-          msg = result.msg || _this._t('uploadFailed');
-          alert(msg);
+          // msg = result.msg || _this._t('uploadFailed');
+          // alert(msg);
           img_path = _this.defaultImage;
         } else {
           img_path = result.file_path;

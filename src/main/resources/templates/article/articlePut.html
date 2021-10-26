@@ -36,6 +36,7 @@
                                         <form id="formtest" method="post" enctype="multipart/form-data" onsubmit="return false" action="##" role="form">
                                             <input name="op" type="hidden" th:value="${op}">
                                             <input name="id" type="hidden" th:value="${article.id}">
+                                            <input name="filename" type="hidden" th:value="${article.filename}">
                                             <div class="form-group">
                                                 <label>文章标题</label>
                                                 <input class="form-control" name="title" type="text" placeholder="请输入文章标题" th:value="${article.title}">
@@ -113,7 +114,7 @@
             upload: {
                 url: '/article/upload',
                 params: {"articleId":articleId},
-                fileKey: 'upload_file',
+                fileKey: 'uploadFile',
                 connectionCount: 1,
                 leaveConfirm: '正在上传图片...'
             }

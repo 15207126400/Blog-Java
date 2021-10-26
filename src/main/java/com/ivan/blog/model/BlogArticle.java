@@ -18,6 +18,8 @@ public class BlogArticle implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
+    private String filename;
+
     private String img;
 
     private String title;

@@ -1,7 +1,9 @@
 package com.ivan.blog.controller;
 
 import com.ivan.blog.annotation.MyLog;
+import com.ivan.blog.constants.BlogConstants;
 import com.ivan.blog.dao.BlogArticlePictureMapper;
+import com.ivan.blog.minio.MinioTemplate;
 import com.ivan.blog.model.BlogArticlePicture;
 import com.ivan.blog.model.BlogCategory;
 import com.ivan.blog.model.SysDict;
@@ -9,16 +11,19 @@ import com.ivan.blog.model.dto.BlogArticleDTO;
 import com.ivan.blog.service.BlogArticleService;
 import com.ivan.blog.service.BlogCategoryService;
 import com.ivan.blog.service.SysDictService;
-import com.ivan.blog.utils.PicUploudUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /*
  *  @Author: Ivan
@@ -35,6 +40,8 @@ public class ArticleController {
     private final SysDictService sysDictService;
     private final BlogArticlePictureMapper blogArticlePictureMapper;
     private final BlogCategoryService blogCategoryService;
+
+    private final MinioTemplate minioTemplate;
 
     /**
      * 文章信息列表查询.
@@ -83,14 +90,25 @@ public class ArticleController {
         return "article/articlePut";
     }
 
+    /**
+     * 新增或修改
+     * @param blogArticleDto
+     * @param op    1=新增, 非1=修改
+     * @param file
+     * @return
+     */
     @PostMapping(value="insertOrUpdate")
     @ResponseBody
     public Map<String,Object> insertOrUpdate(BlogArticleDTO blogArticleDto, String op, @RequestParam(value = "file") MultipartFile file){
-        if(!file.isEmpty()){
-            String path = PicUploudUtil.uploadOriginalImageBySftp(file);
-            blogArticleDto.setImg(path);
-        }
         Map<String,Object> map = new HashMap<>();
+
+        if(!file.isEmpty()){
+            String filename = minioTemplate.upload(BlogConstants.MINIO_MAIN_BUCKET, file);
+            //获取预览地址
+            String path = minioTemplate.constructingAccessUrl(BlogConstants.MINIO_MAIN_BUCKET, filename);
+            blogArticleDto.setImg(path);
+            blogArticleDto.setFilename(filename);
+        }
         if(op.equals("1")){
             boolean result = blogArticleService.saveByArticle(blogArticleDto);
             if(result){
@@ -107,7 +125,7 @@ public class ArticleController {
     }
 
     /**
-     * 文章信息删除;
+     * 文章信息删除
      * @return
      */
     @RequestMapping("/articleDel")
@@ -124,27 +142,26 @@ public class ArticleController {
     }
 
     /**
-     * 富文本文件上传
+     * 文件上传
      * @return
      */
     @RequestMapping("/upload")
     @ResponseBody
-    public Map<String, Object> upload(@RequestParam(value = "upload_file") MultipartFile upload_file, Integer articleId){
-        Map<String, Object> map = new HashMap<>();
-        if(upload_file != null){
-            String path = PicUploudUtil.uploadOriginalImageBySftp(upload_file);
+    public String upload(@RequestParam("uploadFile") MultipartFile uploadFile, @RequestParam("articleId") Integer articleId) {
+        String path = null;
+        if(!uploadFile.isEmpty()){
+            //上传
+            String filename = minioTemplate.upload(BlogConstants.MINIO_RICH_TEXT_BUCKET, uploadFile);
             BlogArticlePicture blogArticlePicture = new BlogArticlePicture();
             blogArticlePicture.setArticleId(articleId);
+            blogArticlePicture.setFilename(filename);
+            //存储预览地址
+            path = minioTemplate.constructingAccessUrl(BlogConstants.MINIO_RICH_TEXT_BUCKET, filename);
             blogArticlePicture.setPictureUrl(path);
-            blogArticlePicture.setCreateTime(new Date());
             blogArticlePictureMapper.insert(blogArticlePicture);
-
-            map.put("success",true);
-            map.put("file_path",path);
-            log.info("富文本图片上传路径:" + path);
         }
 
-        return map;
+        return path;
     }
 
 }

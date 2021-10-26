@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.ivan.blog.model.BlogArticle" >
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="filename" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="img" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="title" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="summary" jdbcType="VARCHAR" javaType="java.lang.String" />
@@ -15,11 +16,11 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, img, title, summary, is_top, traffic, update_time
+    id, filename, img, title, summary, is_top, traffic, update_time
   </sql>
 
   <sql id="Join_Column_List">
-    ba.id, ba.img, ba.title, ba.summary, ba.is_top, ba.traffic, ba.create_time, ba.update_time
+    ba.id, ba.filename, ba.img, ba.title, ba.summary, ba.is_top, ba.traffic, ba.create_time, ba.update_time
   </sql>
 
   <select id="selectListByCategory" resultType="com.ivan.blog.model.dto.BlogArticleDTO">

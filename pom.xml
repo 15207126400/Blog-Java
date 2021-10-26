@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -16,9 +16,9 @@
     <packaging>jar</packaging>
     <description>晏飞的个人博客</description>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+<!--    <properties>-->
+<!--        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
+<!--    </properties>-->
 
     <dependencies>
         <!--默认依赖-->
@@ -38,18 +38,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!--springboot-->
@@ -129,7 +117,7 @@
             <version>2.10.0</version>
         </dependency>
 
-        <!-- shiro spring. -->
+        <!-- shiro spring -->
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-core</artifactId>
@@ -140,8 +128,6 @@
             <artifactId>shiro-spring</artifactId>
             <version>1.2.2</version>
         </dependency>
-
-        <!-- shiro ehcache -->
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-ehcache</artifactId>
@@ -168,6 +154,18 @@
             <version>0.1.54</version>
         </dependency>
 
+        <!--minio-->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>8.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.9.0</version>
+        </dependency>
+
         <!--集成thymeleaf-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -187,7 +185,6 @@
             <artifactId>UserAgentUtils</artifactId>
             <version>1.2.4</version>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -207,6 +204,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <mainClass>com.ivan.blog.BlogApplication</mainClass>
                     <fork>true</fork>
                 </configuration>
             </plugin>
@@ -218,7 +216,6 @@
                 <includes>
                     <include>**/*.yml</include>
                     <include>**/*.xml</include>
-                    <include>**/*.properties</include>
                     <include>**/*.html</include>
                     <include>**/**/*.html</include>
                     <include>**/*.css</include>
