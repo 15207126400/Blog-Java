@@ -14,13 +14,13 @@ spring:
       max-request-size: 100MB
   #Minio参数配置
   minio:
-    endpoint: http://1.117.251.254:9000
+    endpoint: http://minio:9000
     accessKey: admin
     secretKey: 12345678
   aop:
     auto: true
   datasource:
-    url: jdbc:mysql://1.117.251.254:13306/ivan_blog?serverTimezone=GMT%2b8&useUnicode=true&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://mysql:13306/ivan_blog?serverTimezone=GMT%2b8&useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
     password: 135555
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -41,7 +41,7 @@ spring:
     static-locations: classpath:/static
   redis:
     database: 0
-    host: 1.117.251.254
+    host: redis
     port: 6379
     password: 123456
     timeout: 0
