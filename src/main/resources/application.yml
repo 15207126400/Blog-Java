@@ -20,7 +20,7 @@ spring:
   aop:
     auto: true
   datasource:
-    url: jdbc:mysql://mysql:13306/ivan_blog?serverTimezone=GMT%2b8&useUnicode=true&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://mysql:3306/ivan_blog?serverTimezone=GMT%2b8&useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
     password: 135555
     driver-class-name: com.mysql.cj.jdbc.Driver

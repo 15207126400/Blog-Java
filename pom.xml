@@ -148,11 +148,11 @@
         </dependency>
 
         <!--sftp文件上传-->
-        <dependency>
-            <groupId>com.jcraft</groupId>
-            <artifactId>jsch</artifactId>
-            <version>0.1.54</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.jcraft</groupId>-->
+<!--            <artifactId>jsch</artifactId>-->
+<!--            <version>0.1.54</version>-->
+<!--        </dependency>-->
 
         <!--minio-->
         <dependency>
