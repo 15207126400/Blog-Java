@@ -1,47 +1,54 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ivan.blog.dao.BlogCommentMapper" >
-  <resultMap id="BaseResultMap" type="com.ivan.blog.model.BlogComment" >
-    <id column="id" property="id" />
-    <result column="content" property="content" />
-    <result column="email" property="email" />
-    <result column="name" property="name" />
-    <result column="avatar_url" property="avatarUrl" />
-    <result column="create_time" property="createTime" />
-    <result column="parent_id" property="parentId" />
-    <result column="article_id" property="articleId" />
-    <result column="article_title" property="articleTitle" />
-    <result column="ladder" property="ladder" />
-  </resultMap>
+<mapper namespace="com.ivan.blog.mapper.BlogCommentMapper">
+    <resultMap id="BaseResultMap" type="com.ivan.blog.entity.BlogComment">
+        <id column="id" property="id"/>
+        <result column="content" property="content"/>
+        <result column="email" property="email"/>
+        <result column="name" property="name"/>
+        <result column="avatar_url" property="avatarUrl"/>
+        <result column="create_time" property="createTime"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="article_id" property="articleId"/>
+        <result column="article_title" property="articleTitle"/>
+        <result column="ladder" property="ladder"/>
+    </resultMap>
 
-  <sql id="Base_Column_List" >
-    id, content, email, name, avatar_url, create_time, parent_id, article_id, article_title, ladder
-  </sql>
+    <sql id="Base_Column_List">
+        id, content, email, name, avatar_url, create_time, parent_id, article_id, article_title, ladder
+    </sql>
 
-  <sql id="Join_Column_List">
-    bc.id, bc.content, bc.email, bc.name, bc.avatar_url, bc.create_time, bc.parent_id, bc.article_id, bc.article_title, bc.ladder
-  </sql>
+    <sql id="Join_Column_List">
+        bc.id, bc.content, bc.email, bc.name, bc.avatar_url, bc.create_time, bc.parent_id, bc.article_id, bc.article_title, bc.ladder
+    </sql>
 
-  <!--查询文章列表-->
-  <select id="selectList" resultType="com.ivan.blog.model.BlogComment">
-    select <include refid="Base_Column_List" /> from blog_comment
-    order by id desc
-  </select>
+    <!--查询文章列表-->
+    <select id="selectList" resultType="com.ivan.blog.entity.BlogComment">
+        select
+        <include refid="Base_Column_List"/>
+        from blog_comment
+        order by id desc
+    </select>
 
-  <!--根据id查询评论-->
-  <select id="selectById" resultType="com.ivan.blog.model.BlogComment">
-    select <include refid="Base_Column_List" /> from blog_comment
-    where id = #{id}
-  </select>
+    <!--根据id查询评论-->
+    <select id="selectById" resultType="com.ivan.blog.entity.BlogComment">
+        select
+        <include refid="Base_Column_List"/>
+        from blog_comment
+        where id = #{id}
+    </select>
 
-  <select id="selectByParent" resultType="com.ivan.blog.model.vo.BlogCommentVO">
-    select <include refid="Base_Column_List"/> from blog_comment where parent_id = #{parentId}
-  </select>
+    <select id="selectByParent" resultType="com.ivan.blog.entity.vo.BlogCommentVO">
+        select
+        <include refid="Base_Column_List"/>
+        from blog_comment where parent_id = #{parentId}
+    </select>
 
-  <select id="mySelectPage" resultType="com.ivan.blog.model.BlogComment">
-    select <include refid="Base_Column_List"/>
-    from blog_comment
-    where article_id = #{articleId}
-  </select>
+    <select id="mySelectPage" resultType="com.ivan.blog.entity.BlogComment">
+        select
+        <include refid="Base_Column_List"/>
+        from blog_comment
+        where article_id = #{articleId}
+    </select>
 
 </mapper>

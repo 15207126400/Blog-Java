@@ -3,17 +3,17 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Ivan | 博客管理系统</title>
     <link rel="icon" href="http://1.117.251.254:9000/system/avg.jpg">
 
-    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
-    <link th:href="@{/css/font-awesome.css}" rel="stylesheet" />
-    <link th:href="@{/js/morris/morris-0.4.3.min.css}" rel="stylesheet" />
-    <link th:href="@{/css/custom-styles.css}" rel="stylesheet" />
-    <link th:href="@{/js/dataTables/dataTables.bootstrap.css}" rel="stylesheet" />
-    <link th:href="@{/css/common.css}" rel="stylesheet" />
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet"/>
+    <link th:href="@{/css/font-awesome.css}" rel="stylesheet"/>
+    <link th:href="@{/js/morris/morris-0.4.3.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/custom-styles.css}" rel="stylesheet"/>
+    <link th:href="@{/js/dataTables/dataTables.bootstrap.css}" rel="stylesheet"/>
+    <link th:href="@{/css/common.css}" rel="stylesheet"/>
 
     <script th:src="@{/js/jquery-1.10.2.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
@@ -40,7 +40,7 @@
                 <div class="col-md-3 col-sm-12 col-xs-12">
                     <div class="panel panel-primary text-center no-boder bg-color-green">
                         <div class="panel-body">
-                            <img class="top-img" src="http://1.117.251.254:9000/system/user.png" />
+                            <img class="top-img" src="http://1.117.251.254:9000/system/user.png"/>
                             <h3 th:text="${blogBackOv.userCount}"></h3>
                         </div>
                         <div class="panel-footer back-footer-green">
@@ -51,7 +51,7 @@
                 <div class="col-md-3 col-sm-12 col-xs-12">
                     <div class="panel panel-primary text-center no-boder bg-color-blue">
                         <div class="panel-body">
-                            <img class="top-img" src="http://1.117.251.254:9000/system/role.png" />
+                            <img class="top-img" src="http://1.117.251.254:9000/system/role.png"/>
                             <h3 th:text="${blogBackOv.roleCount}"></h3>
                         </div>
                         <div class="panel-footer back-footer-blue">
@@ -62,7 +62,7 @@
                 <div class="col-md-3 col-sm-12 col-xs-12">
                     <div class="panel panel-primary text-center no-boder bg-color-red">
                         <div class="panel-body">
-                            <img class="top-img" src="http://1.117.251.254:9000/system/permiss.png" />
+                            <img class="top-img" src="http://1.117.251.254:9000/system/permiss.png"/>
                             <h3 th:text="${blogBackOv.permissionCount}"></h3>
                         </div>
                         <div class="panel-footer back-footer-red">
@@ -73,7 +73,7 @@
                 <div class="col-md-3 col-sm-12 col-xs-12">
                     <div class="panel panel-primary text-center no-boder bg-color-brown">
                         <div class="panel-body">
-                            <img class="top-img" src="http://1.117.251.254:9000/system/log.png" />
+                            <img class="top-img" src="http://1.117.251.254:9000/system/log.png"/>
                             <h3 th:text="${blogBackOv.logCount}"></h3>
                         </div>
                         <div class="panel-footer back-footer-brown">
@@ -118,7 +118,7 @@
     </div>
 </div>
 <style>
-    .top-img{
+    .top-img {
         width: 50px;
         height: 50px;
     }
@@ -131,13 +131,13 @@
     Morris.Line({
         element: 'morris-line-chart',
         data: [
-            {y: dateList[0].date,a: dateList[0].count},
-            {y: dateList[1].date,a: dateList[1].count},
-            {y: dateList[2].date,a: dateList[2].count},
-            {y: dateList[3].date,a: dateList[3].count},
-            {y: dateList[4].date,a: dateList[4].count},
-            {y: dateList[5].date,a: dateList[5].count},
-            {y: dateList[6].date,a: dateList[6].count}
+            {y: dateList[0].date, a: dateList[0].count},
+            {y: dateList[1].date, a: dateList[1].count},
+            {y: dateList[2].date, a: dateList[2].count},
+            {y: dateList[3].date, a: dateList[3].count},
+            {y: dateList[4].date, a: dateList[4].count},
+            {y: dateList[5].date, a: dateList[5].count},
+            {y: dateList[6].date, a: dateList[6].count}
         ],
         barColors: ['#00a65a', '#f56954'],
         hoverFillColor: '#00a65a',
@@ -154,13 +154,13 @@
     Morris.Bar({
         element: 'morris-bar-chart',
         data: [
-            {y: dateList[0].date,a: dateList[0].count},
-            {y: dateList[1].date,a: dateList[1].count},
-            {y: dateList[2].date,a: dateList[2].count},
-            {y: dateList[3].date,a: dateList[3].count},
-            {y: dateList[4].date,a: dateList[4].count},
-            {y: dateList[5].date,a: dateList[5].count},
-            {y: dateList[6].date,a: dateList[6].count}
+            {y: dateList[0].date, a: dateList[0].count},
+            {y: dateList[1].date, a: dateList[1].count},
+            {y: dateList[2].date, a: dateList[2].count},
+            {y: dateList[3].date, a: dateList[3].count},
+            {y: dateList[4].date, a: dateList[4].count},
+            {y: dateList[5].date, a: dateList[5].count},
+            {y: dateList[6].date, a: dateList[6].count}
         ],
         lineWidth: ['10px'],
         barColors: ['#508695', '#f56954'],
@@ -190,7 +190,7 @@
             value: blogOv.tagsCount
         }, {
             label: "评论",
-            value: blogOv.commontCount
+            value: blogOv.commentCount
         }],
         resize: true,
         colors: ["#3c8dbc", "#f56954", "#00a65a"],

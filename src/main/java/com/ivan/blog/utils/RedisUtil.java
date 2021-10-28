@@ -1,11 +1,12 @@
 package com.ivan.blog.utils;
 
-/*
+/**
  *  @Author: Ivan
  *  @Description:   redis - key设计
  *  @Date: 2019/12/16 20:27
  */
 public class RedisUtil {
+
     /**
      * redis的key
      * 形式为：通过方法名

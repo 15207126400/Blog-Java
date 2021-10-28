@@ -1,32 +1,26 @@
 package com.ivan.blog.service;
 
-import com.ivan.blog.model.SysRole;
-import com.ivan.blog.model.SysUser;
-import com.ivan.blog.model.tool.TreeModel;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.ivan.blog.entity.SysRole;
+import com.ivan.blog.entity.tool.TreeModel;
 
 import java.util.List;
 
-/*
+/**
  *  @Author: Ivan
  *  @Description:
  *  @Date: 2019/10/31 09:37
  */
-public interface SysRoleService {
-    List<SysRole> list();
+public interface SysRoleService extends IService<SysRole> {
 
     List<TreeModel> getTreeByRole();
 
-    List<TreeModel> getTreeByRole(String role_id);
+    List<TreeModel> getTreeByRole(String roleId);
 
-    int deleteByPrimaryKey(Integer id);
+    boolean insertByRoleId(SysRole sysRole);
 
-    int insert(SysRole record);
+    boolean updateByRoleId(SysRole sysRole);
 
-    int insertSelective(SysRole record);
+    boolean deleteByRoleId(Integer roleId);
 
-    SysRole selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(SysRole record);
-
-    int updateByPrimaryKey(SysRole record);
 }

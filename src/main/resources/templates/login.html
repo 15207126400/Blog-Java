@@ -8,57 +8,65 @@
     <link rel="icon" href="http://1.117.251.254:9000/system/avg.jpg">
 
     <script th:src="@{/js/jquery-1.10.2.js}"></script>
-    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
-    <link th:href="@{/css/font-awesome.css}" rel="stylesheet" />
-    <link th:href="@{/js/morris/morris-0.4.3.min.css}" rel="stylesheet" />
-    <link th:href="@{/css/custom-styles.css}" rel="stylesheet" />
-    <link th:href="@{/css/common.css}" rel="stylesheet" />
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet"/>
+    <link th:href="@{/css/font-awesome.css}" rel="stylesheet"/>
+    <link th:href="@{/js/morris/morris-0.4.3.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/custom-styles.css}" rel="stylesheet"/>
+    <link th:href="@{/css/common.css}" rel="stylesheet"/>
 
     <style type="text/css">
         * {
             margin: 0;
             padding: 0;
         }
+
         body {
             font-size: 12px;
-            background-image: url("http://1.117.251.254:9000/system/index_bg.jpg");
-            background-position: center center;
+            /*background-image: url("http://1.117.251.254:9000/system/index_bg.jpg");*/
+            background-image: url("http://1.117.251.254:9000/system/09043651_8de5634925.jpeg");
             background-repeat: no-repeat;
-            background-size: 100%, 100%;
+            background-size: 100%;
         }
+
         .starter-template {
             width: 400px;
             padding: 40px 15px;
             text-align: center;
-            background: rgba(253,253,253,0.2);
+            background: rgba(253, 253, 253, 0.2);
             border: 1px solid #8B9596;
             border-radius: 10px;
         }
-        .form-group{
+
+        .form-group {
             width: 300px;
             height: 50px;
         }
-        .form-control{
+
+        .form-control {
             width: 260px;
             height: 40px;
-            background: rgba(253,253,253,0.1);
+            background: rgba(253, 253, 253, 0.1);
             color: #fff;
         }
-        .sub-btn{
+
+        .sub-btn {
             width: 260px;
             height: 40px;
-            background: rgba(158,5,157,0.8);
-            color:#fff;
+            background: rgba(158, 5, 157, 0.8);
+            color: #fff;
         }
-        .check{
+
+        .check {
             width: 260px;
             height: 25px;
             line-height: 25px;
         }
-        #ajaxLogin{
+
+        #ajaxLogin {
             background: #BB0AC8;
             color: #fff;
         }
+
         #ajaxLogin:hover {
             background: #C124D1;
             color: #fff;
@@ -67,72 +75,72 @@
 </head>
 
 <body>
-    <div class="app-column-center-layout">
+<div class="app-column-center-layout">
 
-        <h2 style="color:#fff;font-weight:bold;font-family:'Microsoft YaHei UI';margin:100px 0px 20px 0px;">Ivan Blog</h2>
-        <div class="starter-template app-column-center-layout">
-            <div class="form-group app-column-center-layout">
-                <input type="text" class="form-control" name="username" id="username" placeholder="Username" />
-            </div>
-            <div class="form-group app-column-center-layout">
-                <input type="password" class="form-control" name="password" id="password" placeholder="Password" />
-            </div>
-            <div class="check app-row-start-layout">
-                <div>
-                    <input type="checkbox" name="rememberMe" id="rememberMe" />
-                </div>
-                <div>
-                    <text>记住我</text>
-                </div>
-            </div>
-            <div style="height:50px;">
-                <h4 style="color:#FF0000;font-size:14px;" id="erro"></h4>
-            </div>
-            <input id="ajaxLogin" type="button" onclick="sendAjax()" class="btn sub-btn" value="Login" />
+    <h2 style="color:#fff;font-weight:bold;font-family:'Microsoft YaHei UI';margin:100px 0px 20px 0px;">Ivan | 博客管理系统</h2>
+    <div class="starter-template app-column-center-layout">
+        <div class="form-group app-column-center-layout">
+            <input type="text" class="form-control" name="username" id="username" placeholder="Username"/>
         </div>
+        <div class="form-group app-column-center-layout">
+            <input type="password" class="form-control" name="password" id="password" placeholder="Password"/>
+        </div>
+        <div class="check app-row-start-layout">
+            <div>
+                <input type="checkbox" name="rememberMe" id="rememberMe"/>
+            </div>
+            <div>
+                <text>记住我</text>
+            </div>
+        </div>
+        <div style="height:50px;">
+            <h4 style="color:#FF0000;font-size:14px;" id="erro"></h4>
+        </div>
+        <input id="ajaxLogin" type="button" onclick="sendAjax()" class="btn sub-btn" value="Login"/>
     </div>
+</div>
 </body>
 
 <script th:inline="javascript">
 
-    function sendAjax(){
-            var username = $('#username').val();
-            var password = $('#password').val();
-            var rememberMe = $('#rememberMe').is(':checked');
+    function sendAjax() {
+        var username = $('#username').val();
+        var password = $('#password').val();
+        var rememberMe = $('#rememberMe').is(':checked');
 
-            if(username == "" || password == ""){
-                alert("账号或密码不能为空!");
-                return false;
-            }
-
-            $.ajax({
-                url: "/ajaxLogin",
-                type:"post",
-                dataType:"json",
-                data: {
-                    "username":username,
-                    "password":password,
-                    "rememberMe":rememberMe
-                },
-                async: true ,
-                success: function (data) {
-                    console.log(data)
-                    if(data.status==200){
-                        location.href = "/index";
-                    }else if(data.status==400){
-                        location.href = "/lock";
-                    }else if(data.status==100){
-                        $("#erro").html("密码错误，您还有："+data.message+" 次机会");
-                    }else if(data.status==600){
-                        $("#erro").html("账号不存在,您还有："+data.message+" 次机会");
-                    }else if(data.status==300){
-                        $("#erro").html("账号不存在,您还有："+data.message+" 次机会");
-                    }else{
-                        $("#erro").html(data.message);
-                    }
-                }
-            });
+        if (username == "" || password == "") {
+            alert("账号或密码不能为空!");
+            return false;
         }
+
+        $.ajax({
+            url: "/ajaxLogin",
+            type: "post",
+            dataType: "json",
+            data: {
+                "username": username,
+                "password": password,
+                "rememberMe": rememberMe
+            },
+            async: true,
+            success: function (data) {
+                console.log(data)
+                if (data.status == 200) {
+                    location.href = "/index";
+                } else if (data.status == 400) {
+                    location.href = "/lock";
+                } else if (data.status == 100) {
+                    $("#erro").html("密码错误，您还有：" + data.count + " 次机会");
+                } else if (data.status == 600) {
+                    $("#erro").html("账号不存在,您还有：" + data.count + " 次机会");
+                } else if (data.status == 300) {
+                    $("#erro").html("账号不存在,您还有：" + data.count + " 次机会");
+                } else {
+                    $("#erro").html(data.message);
+                }
+            }
+        });
+    }
 </script>
 
 

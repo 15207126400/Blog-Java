@@ -11,23 +11,23 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-/*
- *  @Author: Ivan
- *  @Description:   邮件发送工具
- *  @Date: 2019/12/28 19:32
+/**
+ * @Author: Ivan
+ * @Description: 邮件发送工具
+ * @Date: 2019/12/28 19:32
  */
 @Slf4j
 public class MailUtil {
 
     private static final String HOST = "smtp.163.com";
     private static final String USERNAME = "15207126400@163.com";
-    private static final String PASSWORD = "qinoupp918";
+    private static final String PASSWORD = "GTZJMOQDUGVTHHIJ";
 
-    public static void sendMail(String subject, String text, String toUsername){
+    public static void sendMail(String subject, String text, String toUsername) {
         Properties props = new Properties();
         props.setProperty("mail.transport.protocol", "smtp");
         //smtp服务器地址
-        props.put("mail.smtp.host",HOST);
+        props.put("mail.smtp.host", HOST);
 
         Session session = Session.getInstance(props);
         //邮件日志打印
@@ -45,21 +45,21 @@ public class MailUtil {
 
             Transport transport = session.getTransport();
             //发件人邮箱,授权码(可以在邮箱设置中获取到授权码的信息)
-            transport.connect(USERNAME,PASSWORD);
+            transport.connect(USERNAME, PASSWORD);
             transport.sendMessage(msg, msg.getAllRecipients());
 
             log.info("邮件发送成功!");
             transport.close();
 
-        } catch (MessagingException e){
+        } catch (MessagingException e) {
             throw new BizException("邮件发送失败: " + e);
         }
 
     }
 
-
+    //发送测试
     public static void main(String[] args) {
-       sendMail("Ivan | 晏飞个人博客评论提醒","您有一封邮件,请查收!","286835776@qq.com");
+        sendMail("Ivan | 晏飞个人博客评论提醒", "hello world!", "286835776@qq.com");
     }
 
 

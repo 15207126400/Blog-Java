@@ -4,7 +4,7 @@ import com.ivan.blog.Exception.Enum.CommonEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-/*
+/**
  *  @Author: Ivan
  *  @Description:   业务异常类
  *  @Date: 2020/1/1 14:08

@@ -1,24 +1,27 @@
 package com.ivan.blog.service.impl;
 
 import com.ivan.blog.Exception.BizException;
-import com.ivan.blog.model.tool.EmailModel;
+import com.ivan.blog.entity.tool.EmailModel;
 import com.ivan.blog.service.MailService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+/**
+ *  @Author: Ivan
+ *  @Description:
+ *  @Date: 2019/12/17 21:16
+ */
 @Service
 @Slf4j
+@AllArgsConstructor
 public class MailServiceImpl implements MailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
-    private static final String HOST = "smtp.163.com";
     private static final String USERNAME = "15207126400@163.com";
-    private static final String PASSWORD = "qinoupp918";
 
     @Override
     public void sendSimpleMail(EmailModel emailModel){

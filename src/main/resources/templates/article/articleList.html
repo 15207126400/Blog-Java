@@ -3,7 +3,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <th:block th:include="common :: commonHerd" />
+    <th:block th:include="common :: commonHerd"/>
 </head>
 <div id="wrapper">
     <div id="page-wrapper">
@@ -43,7 +43,8 @@
                                         <td th:text="${#dates.format(article.updateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                                         <td>
                                             <a th:href="@{/article/articlePut/{id}(id=${article.id})}">编辑</a>
-                                            <a href="javascript:void(0);" th:onclick="'javascript:delData('+${article.id}+')'">删除</a>
+                                            <a href="javascript:void(0);"
+                                               th:onclick="'javascript:delData('+${article.id}+')'">删除</a>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -58,15 +59,15 @@
 </div>
 <script th:inline="javascript">
     //删除
-    function delData(id){
-        if(confirm("确定要删除吗?")){
+    function delData(id) {
+        if (confirm("确定要删除吗?")) {
             $.ajax({
                 url: "/article/articleDel",
-                type:"post",
-                dataType:"json",
-                data: {"id":id},
+                type: "post",
+                dataType: "json",
+                data: {"id": id},
                 success: function (data) {
-                    if(data.status == 200){
+                    if (data.status == 200) {
                         alert("操作成功");
                         location.href = "/article/articleList";
                     } else {

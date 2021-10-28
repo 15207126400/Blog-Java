@@ -1,6 +1,6 @@
 package com.ivan.blog.service;
 
-import com.ivan.blog.model.tool.EmailModel;
+import com.ivan.blog.entity.tool.EmailModel;
 
 /**
  * 邮件发送

@@ -3,6 +3,7 @@ package com.ivan.blog.utils;
 import com.ivan.blog.Exception.BizException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -11,10 +12,10 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
-/*
- *  @Author: Ivan
- *  @Description:   http 请求工具类
- *  @Date: 2019/12/28 19:32
+/**
+ * @Author: Ivan
+ * @Description: http 请求工具类
+ * @Date: 2019/12/28 19:32
  */
 @Slf4j
 public class HttpUtil {
@@ -47,8 +48,8 @@ public class HttpUtil {
         String result = "";
         BufferedReader in = null;
         try {
-            String urlNameString =baseUrl;
-            if(param!=null){
+            String urlNameString = baseUrl;
+            if (param != null) {
                 urlNameString = baseUrl + "?" + param;
             }
             log.info("http请求：" + urlNameString);
@@ -99,7 +100,7 @@ public class HttpUtil {
     }
 
     public static String doGet(String baseUrl) {
-        return doGet(baseUrl,"");
+        return doGet(baseUrl, "");
     }
 
     /**

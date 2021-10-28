@@ -24,9 +24,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.concurrent.TimeUnit;
 
-/*
+/**
  *  @Author: Ivan
- *  @Description:   频繁请求限制,切面处理类
+ *  @Description:   频繁请求限制, 切面处理类
  *  @Date: 2020/1/1 15:42
  */
 @Aspect
@@ -74,22 +74,15 @@ public class RequestLimitAop {
         Long increment = entityIdCounter.getAndIncrement();
         ValueOperations redis = stringRedisTemplate.opsForValue();
         //设置有效时间和累计次数
-        //redis.set(key, "1", 2*60, TimeUnit.SECONDS);
         redis.set(key, "1", limit.time(), TimeUnit.MILLISECONDS);
         Long incrByCount = redis.increment(key, increment);
         //验证有效时间
         Long expire = stringRedisTemplate.boundHashOps(key).getExpire();
         log.info("剩余有效时间: " + expire);
         if (incrByCount > limit.count()) {
-            /**
-             * 该次请求已经超过了规定时间范围内请求的最大次数
-             */
             log.info("当前请求次数为：{}，该次请求已经超过了规定时间范围内请求的最大次数", incrByCount);
             return false;
         } else {
-            /**
-             * 该次请求已经未超过了规定时间范围内请求的最大次数，可以继续请求
-             */
             log.info("当前请求次数为：{}，该次请求未超过规定时间范围内请求的最大次数，可以继续请求", incrByCount);
             return true;
         }

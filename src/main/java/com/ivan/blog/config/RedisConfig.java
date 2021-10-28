@@ -17,7 +17,7 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import java.time.Duration;
 
-/*
+/**
  *  @Author: Ivan
  *  @Description:   redis配置类
  *  @Date: 2019/10/31 23:04
@@ -39,7 +39,7 @@ public class RedisConfig {
         return cacheManager;
     }
 
-    // 以下两种redisTemplate自由根据场景选择
+    //以下两种redisTemplate自由根据场景选择
     @Bean
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();

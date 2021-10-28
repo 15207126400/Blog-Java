@@ -7,7 +7,7 @@ import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
-/*
+/**
  *  @Author: Ivan
  *  @Description:   shiro权限异常
  *                  统一转发到没有权限提示页面

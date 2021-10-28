@@ -3,10 +3,10 @@ package com.ivan.blog.utils;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
-/*
- *  @Author: Ivan
- *  @Description:
- *  @Date: 2019/10/31 20:49
+/**
+ * @Author: Ivan
+ * @Description:
+ * @Date: 2019/10/31 20:49
  */
 public class MD5Util {
 

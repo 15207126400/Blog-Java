@@ -1,4 +1,3 @@
-
 /*
  * JQuery zTree core v3.5.41
  * http://treejs.cn/
@@ -632,7 +631,7 @@
                     }
                     newIsParent = !!newIsParent;
                     node[key] = newIsParent;
-                } else if (typeof node[key] == "string"){
+                } else if (typeof node[key] == "string") {
                     node[key] = tools.eqs(node[key], "true");
                 } else {
                     node[key] = !!node[key];
@@ -2589,7 +2588,7 @@
             }
             newChecked = !!newChecked;
             node[key] = newChecked;
-        } else if (typeof node[key] == "string"){
+        } else if (typeof node[key] == "string") {
             node[key] = tools.eqs(node[key], "true");
         } else {
             node[key] = !!node[key];
@@ -4470,7 +4469,7 @@
                     }
                     newIsParent = !!newIsParent;
                     node[key] = newIsParent;
-                } else if (typeof node[key] == "string"){
+                } else if (typeof node[key] == "string") {
                     node[key] = tools.eqs(node[key], "true");
                 } else {
                     node[key] = !!node[key];
@@ -6427,7 +6426,7 @@
             }
             newChecked = !!newChecked;
             node[key] = newChecked;
-        } else if (typeof node[key] == "string"){
+        } else if (typeof node[key] == "string") {
             node[key] = tools.eqs(node[key], "true");
         } else {
             node[key] = !!node[key];

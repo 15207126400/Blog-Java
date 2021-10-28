@@ -16,9 +16,9 @@
     <packaging>jar</packaging>
     <description>晏飞的个人博客</description>
 
-<!--    <properties>-->
-<!--        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
-<!--    </properties>-->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <dependencies>
         <!--默认依赖-->
@@ -27,7 +27,7 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
-        <!--mail-->
+        <!--Mail-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
@@ -40,19 +40,19 @@
             <optional>true</optional>
         </dependency>
 
-        <!--springboot-->
+        <!--SpringBoot-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!--spring切面aop依赖-->
+        <!--AOP切面-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
-        <!--mysql-->
+        <!--MySQL-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -66,18 +66,18 @@
             <version>1.1.10</version>
         </dependency>
 
-        <!-- Mybatis-Plus-->
+        <!--MyBatisPlus-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.1.2</version>
         </dependency>
 
-        <!-- Spring Boot Redis 依赖 -->
+        <!--Redis依赖-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-            <!-- 1.5的版本默认采用的连接池技术是jedis，2.0以上版本默认连接池是lettuce, 因为此次是采用jedis，所以需要排除lettuce的jar -->
+            <!--1.5的版本默认采用的连接池技术是jedis，2.0以上版本默认连接池是lettuce, 因为此次是采用jedis，所以需要排除lettuce的jar-->
             <exclusions>
                 <exclusion>
                     <groupId>redis.clients</groupId>
@@ -89,35 +89,26 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
-        <!-- jedis客户端 -->
+        <!--Jedis客户端-->
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
         </dependency>
-
-        <!-- spring2.X集成redis所需common-pool2，使用jedis必须依赖它-->
+        <!--Spring2.X集成redis所需common-pool2，使用jedis必须依赖它-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
             <version>2.5.0</version>
         </dependency>
 
-        <!-- fastjson -->
+        <!--fastjson-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.58</version>
         </dependency>
 
-        <!-- jackson-databind依赖,时间格式转换 -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.10.0</version>
-        </dependency>
-
-        <!-- shiro spring -->
+        <!--shiro-->
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-core</artifactId>
@@ -140,21 +131,14 @@
             <classifier>jdk15</classifier>
         </dependency>
 
-        <!--lombok -->
+        <!--Lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.0</version>
         </dependency>
 
-        <!--sftp文件上传-->
-<!--        <dependency>-->
-<!--            <groupId>com.jcraft</groupId>-->
-<!--            <artifactId>jsch</artifactId>-->
-<!--            <version>0.1.54</version>-->
-<!--        </dependency>-->
-
-        <!--minio-->
+        <!--Minio-->
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
@@ -166,20 +150,27 @@
             <version>4.9.0</version>
         </dependency>
 
-        <!--集成thymeleaf-->
+        <!--thymeleaf-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
-        <!--java8 时间类型依赖-->
+        <!--Java8 时间类型依赖-->
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-java8time</artifactId>
             <version>3.0.1.RELEASE</version>
         </dependency>
 
-        <!--ip工具-->
+        <!--jackson-databind, 时间格式转换-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.10.0</version>
+        </dependency>
+
+        <!--IP工具-->
         <dependency>
             <groupId>nl.bitwalker</groupId>
             <artifactId>UserAgentUtils</artifactId>
@@ -220,7 +211,7 @@
                     <include>**/**/*.html</include>
                     <include>**/*.css</include>
                     <include>**/*.js</include>
-                    <include>**/*.png</include>
+                    <include>**/*.json</include>
                 </includes>
             </resource>
         </resources>

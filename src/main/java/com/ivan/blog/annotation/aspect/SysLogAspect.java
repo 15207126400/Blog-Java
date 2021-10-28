@@ -1,10 +1,10 @@
 package com.ivan.blog.annotation.aspect;
 
 import com.ivan.blog.annotation.MyLog;
-import com.ivan.blog.model.SysLog;
-import com.ivan.blog.model.SysUser;
+import com.ivan.blog.entity.SysLog;
+import com.ivan.blog.entity.SysUser;
 import com.ivan.blog.service.SysLogService;
-import com.ivan.blog.utils.CurrentUserUtil;
+import com.ivan.blog.utils.SystemUserUtil;
 import com.ivan.blog.utils.IpAndAddrUtil;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang.StringUtils;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Date;
 
-/*
+/**
  *  @Author: Ivan
  *  @Description:   操作日志,切面处理类
  *  @Date: 2019/11/14 09:46
@@ -30,6 +30,7 @@ import java.util.Date;
 @Component
 @AllArgsConstructor
 public class SysLogAspect {
+
     private final SysLogService sysLogService;
 
     //定义切点 @Pointcut
@@ -38,8 +39,6 @@ public class SysLogAspect {
     public void logPoinCut() {
     }
 
-
-
     //切面 配置通知
     @AfterReturning("logPoinCut()")
     public void saveSysLog(JoinPoint joinPoint) {
@@ -47,7 +46,7 @@ public class SysLogAspect {
         SysLog sysLog = new SysLog();
 
         //获取用户名
-        SysUser sysUser = CurrentUserUtil.getCurrentUserinfo();
+        SysUser sysUser = SystemUserUtil.getCurrentUserinfo();
         if(sysUser != null){
             sysLog.setUsername(sysUser.getUsername());
         } else {

@@ -2,7 +2,7 @@ package com.ivan.blog.annotation;
 
 import java.lang.annotation.*;
 
-/*
+/**
  *  @Author: Ivan
  *  @Description:   日志操作
  *  @Date: 2019/11/14 09:42

@@ -3,23 +3,25 @@ package com.ivan.blog.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ivan.blog.dao.*;
-import com.ivan.blog.model.BlogArticle;
-import com.ivan.blog.model.BlogArticleCategory;
-import com.ivan.blog.model.BlogArticleContent;
-import com.ivan.blog.model.dto.BlogArticleDTO;
+import com.ivan.blog.entity.BlogArticle;
+import com.ivan.blog.entity.BlogArticleCategory;
+import com.ivan.blog.entity.BlogArticleContent;
+import com.ivan.blog.entity.dto.BlogArticleDTO;
+import com.ivan.blog.mapper.BlogArticleCategoryMapper;
+import com.ivan.blog.mapper.BlogArticleContentMapper;
+import com.ivan.blog.mapper.BlogArticleMapper;
 import com.ivan.blog.service.BlogArticleService;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/*
+/**
  *  @Author: Ivan
  *  @Description:
  *  @Date: 2019/11/28 16:15
@@ -31,7 +33,6 @@ public class BlogArticleServiceImpl extends ServiceImpl<BlogArticleMapper, BlogA
     private final BlogArticleMapper blogArticleMapper;
     private final BlogArticleContentMapper blogArticleContentMapper;
     private final BlogArticleCategoryMapper blogArticleCategoryMapper;
-    private final RedisTemplate redisTemplate;
 
     @Override
     @Transactional(rollbackFor = Exception.class)

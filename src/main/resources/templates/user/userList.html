@@ -3,7 +3,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <th:block th:include="common :: commonHerd" />
+    <th:block th:include="common :: commonHerd"/>
 </head>
 <div id="wrapper">
     <div id="page-wrapper">
@@ -44,10 +44,11 @@
                                         <td th:text="${user.nickname}"></td>
                                         <td th:text="${user.mail}"></td>
                                         <td th:text="${user.phone}"></td>
-                                        <td th:text="${user.rolename}"></td>
+                                        <td th:text="${user.roleName}"></td>
                                         <td>
                                             <a th:href="@{/user/userPut/{id}(id=${user.id})}">编辑</a>
-                                            <a href="javascript:void(0);" th:onclick="'javascript:delData('+${user.id}+')'">删除</a>
+                                            <a href="javascript:void(0);"
+                                               th:onclick="'javascript:delData('+${user.id}+')'">删除</a>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -62,15 +63,15 @@
 </div>
 <script th:inline="javascript">
     //删除
-    function delData(id){
-        if(confirm("确定要删除吗?")){
+    function delData(id) {
+        if (confirm("确定要删除吗?")) {
             $.ajax({
                 url: "/user/userDel",
-                type:"post",
-                dataType:"json",
-                data: {"id":id},
+                type: "post",
+                dataType: "json",
+                data: {"id": id},
                 success: function (data) {
-                    if(data.status == 200){
+                    if (data.status == 200) {
                         alert("操作成功");
                         location.href = "/user/userList";
                     } else {

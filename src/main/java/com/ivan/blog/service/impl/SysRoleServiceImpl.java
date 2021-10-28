@@ -1,199 +1,195 @@
 package com.ivan.blog.service.impl;
 
-import com.ivan.blog.dao.SysRoleMapper;
-import com.ivan.blog.model.SysPermission;
-import com.ivan.blog.model.SysRole;
-import com.ivan.blog.model.SysRolePermission;
-import com.ivan.blog.model.tool.TreeModel;
-import com.ivan.blog.service.SysPermissionService;
-import com.ivan.blog.service.SysRolePermissionService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.ImmutableMap;
+import com.ivan.blog.entity.SysPermission;
+import com.ivan.blog.entity.SysRole;
+import com.ivan.blog.entity.SysRolePermission;
+import com.ivan.blog.entity.tool.TreeModel;
+import com.ivan.blog.mapper.SysPermissionMapper;
+import com.ivan.blog.mapper.SysRoleMapper;
+import com.ivan.blog.mapper.SysRolePermissionMapper;
 import com.ivan.blog.service.SysRoleService;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-/*
+/**
  *  @Author: Ivan
  *  @Description:
  *  @Date: 2019/10/31 09:38
  */
 @Service
-public class SysRoleServiceImpl implements SysRoleService {
+@AllArgsConstructor
+public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
 
-    @Resource
-    private SysRoleMapper sysRoleMapper;
-    @Autowired
-    private SysPermissionService sysPermissionService;
-    @Autowired
-    private SysRolePermissionService sysRolePermissionService;
-
-    @Override
-    public List<SysRole> list() {
-        return sysRoleMapper.list();
-    }
+    private final SysPermissionMapper sysPermissionMapper;
+    private final SysRolePermissionMapper sysRolePermissionMapper;
 
     @Override
     public List<TreeModel> getTreeByRole() {
-        Object result[] = new Object[1];
-        //一级节点数据 (去重查询出权限类型 用户管理,角色管理等等)
-        List<SysPermission> firstNode = sysPermissionService.listByDeWeight();
+        List<SysPermission> sysPermissionList = sysPermissionMapper.selectList(Wrappers.emptyWrapper());
+
+        //分组过滤一级节点数据 (去重查询出权限类型 用户管理,角色管理等等)
+        Map<String, List<SysPermission>> permissionMap = sysPermissionList.stream().collect(Collectors.groupingBy(SysPermission::getType));
 
         //二级节点数据
-        List<SysPermission> secondNode = sysPermissionService.list();
-        List<TreeModel> tree = new ArrayList<TreeModel>();
+        List<SysPermission> secondNode = sysPermissionMapper.selectList(Wrappers.emptyWrapper());
+        List<TreeModel> tree = new ArrayList<>();
 
-        for(int i = 0; i < firstNode.size(); i++) {                     //循环给第一级节点添加子节点
-            TreeModel node0 = new TreeModel();
-            node0.setText(firstNode.get(i).getType());
-            //设置一级节点是否勾选
-            Map<String, Object> firstNodeMap = new HashMap<>();
-            firstNodeMap.put("checked",false);
-            node0.setState(firstNodeMap);
-            for(SysPermission r : secondNode) {                      //循环第二级节点，给第一级节点添加子节点
-                if((node0.getText()).equals (r.getType())) {                //比较第二级节点的父节点id是不是当前父节点的id
-                    TreeModel node1 = new TreeModel();
-                    node1.setTags(r.getId());
-                    node1.setText(r.getName());
-                    Map<String, Object> secondNodeMap = new HashMap<>();
-                    secondNodeMap.put("checked",false);
-                    node1.setState(secondNodeMap);
-                    node1.setNodes(null);
-                    node0.getNodes().add(node1);
+        //遍历M
+        for (Map.Entry<String, List<SysPermission>> entry : permissionMap.entrySet()) {
+            TreeModel mainNode = new TreeModel();
+            mainNode.setText(entry.getKey());
+            mainNode.setState(ImmutableMap.of("checked", false));
+            for (SysPermission r : secondNode) {//循环第二级节点，给第一级节点添加子节点
+                if ((mainNode.getText()).equals(r.getType())) {//比较第二级节点的父节点id是不是当前父节点的id
+                    TreeModel childNode = new TreeModel();
+                    childNode.setTags(r.getId());
+                    childNode.setText(r.getName());
+                    childNode.setState(ImmutableMap.of("checked", false));
+                    childNode.setNodes(null);
+                    mainNode.getNodes().add(childNode);
                 }
             }
-            if(node0.getNodes().size()==0)
-                node0.setNodes(null);
-            tree.add(node0);
+            if (mainNode.getNodes().size() == 0)
+                mainNode.setNodes(null);
+            tree.add(mainNode);
         }
+
         return tree;
     }
 
     @Override
-    public List<TreeModel> getTreeByRole(String role_id) {
-        //JSONObject result = new JSONObject();
-        //一级节点数据 (去重查询出权限类型 用户管理,角色管理等等)
-        List<SysPermission> firstNode = sysPermissionService.listByDeWeight();
+    public List<TreeModel> getTreeByRole(String roleId) {
+        List<SysPermission> sysPermissionList = sysPermissionMapper.selectList(Wrappers.emptyWrapper());
+
+        //分组过滤一级节点数据 (去重查询出权限类型 用户管理,角色管理等等)
+        Map<String, List<SysPermission>> permissionMap = sysPermissionList.stream().collect(Collectors.groupingBy(SysPermission::getType));
 
         //二级节点数据
-        List<SysPermission> secondNode = sysPermissionService.list();
-        List<TreeModel> tree = new ArrayList<TreeModel>();
+        List<SysPermission> secondNode = sysPermissionMapper.selectList(Wrappers.emptyWrapper());
+        List<TreeModel> tree = new ArrayList<>();
 
-        for(int i = 0; i < firstNode.size(); i++) {
-            TreeModel node0 = new TreeModel();
-            node0.setText(firstNode.get(i).getType());
-
+        //遍历
+        for (Map.Entry<String, List<SysPermission>> entry : permissionMap.entrySet()) {
+            TreeModel mainNode = new TreeModel();
+            mainNode.setText(entry.getKey());
             //叠加器
             int num = 0;
-            for(SysPermission r : secondNode) {
-                if((node0.getText()).equals (r.getType())) {
-                    TreeModel node1 = new TreeModel();
-                    node1.setTags(r.getId());
-                    node1.setText(r.getName());
+            for (SysPermission r : secondNode) {
+                if ((mainNode.getText()).equals(r.getType())) {
+                    TreeModel childNode = new TreeModel();
+                    childNode.setTags(r.getId());
+                    childNode.setText(r.getName());
                     //赋值勾选状态
-                    if(sysPermissionService.findPermissionByUrl(r.getUrl(),role_id) != null){
-                        Map<String, Object> secondNodeMap = new HashMap<>();
-                        secondNodeMap.put("checked",true);
-                        node1.setState(secondNodeMap);
+                    if (sysPermissionMapper.findPermissionByUrl(r.getUrl(), roleId) != null) {
+                        childNode.setState(ImmutableMap.of("checked", true));
                         num++;
                     } else {
-                        Map<String, Object> secondNodeMap = new HashMap<>();
-                        secondNodeMap.put("checked",false);
-                        node1.setState(secondNodeMap);
+                        childNode.setState(ImmutableMap.of("checked", false));
                     }
-                    node1.setNodes(null);
-                    node0.getNodes().add(node1);
+                    childNode.setNodes(null);
+                    mainNode.getNodes().add(childNode);
                 }
                 //设置一级节点是否勾选
-                Map<String, Object> firstNodeMap = new HashMap<>();
-                if(num > 0){
-                    firstNodeMap.put("checked",true);
-                    node0.setState(firstNodeMap);
+                if (num > 0) {
+                    mainNode.setState(ImmutableMap.of("checked", true));
                 } else {
-                    firstNodeMap.put("checked",false);
-                    node0.setState(firstNodeMap);
+                    mainNode.setState(ImmutableMap.of("checked", false));
                 }
             }
-
-            if(node0.getNodes().size()==0) node0.setNodes(null);
-            tree.add(node0);
+            if (mainNode.getNodes().size() == 0) mainNode.setNodes(null);
+            tree.add(mainNode);
         }
+
         return tree;
     }
 
+    /**
+     * 新增
+     *
+     * @param sysRole
+     * @return
+     */
     @Override
-    @Transactional
-    public int deleteByPrimaryKey(Integer id) {
-        batchDeleteRolePermissionByRole(id);
-
-        return sysRoleMapper.deleteByPrimaryKey(id);
-    }
-
-    @Override
-    public int insert(SysRole record) {
-        return sysRoleMapper.insert(record);
-    }
-
-    @Override
-    @Transactional
-    public int insertSelective(SysRole record) {
-        if(StringUtils.isNotEmpty(record.getPermission_ids())){
-            batchInsertRolePermissionByRole(record.getId(),record.getPermission_ids());
-        }
-        return sysRoleMapper.insertSelective(record);
-    }
-
-    @Override
-    public SysRole selectByPrimaryKey(Integer id) {
-        return sysRoleMapper.selectByPrimaryKey(id);
-    }
-
-    @Override
-    @Transactional
-    public int updateByPrimaryKeySelective(SysRole record) {
-        if(StringUtils.isNotEmpty(record.getPermission_ids())){
-            //遍历删除该角色之前关联的权限
-            batchDeleteRolePermissionByRole(record.getId());
-
-            //批量新增新的权限与角色关联关系
-            batchInsertRolePermissionByRole(record.getId(),record.getPermission_ids());
-        } else {
-            //遍历删除该角色之前关联的权限
-            batchDeleteRolePermissionByRole(record.getId());
+    @Transactional(rollbackFor = Exception.class)
+    public boolean insertByRoleId(SysRole sysRole) {
+        boolean bol = baseMapper.insert(sysRole) > 0;
+        if (bol) {
+            String permissionIds = sysRole.getPermissionIds();
+            batchInsertRolePermissionByRole(sysRole.getId(), permissionIds);
         }
 
-        return sysRoleMapper.updateByPrimaryKeySelective(record);
+        return bol;
     }
 
+    /**
+     * 修改
+     *
+     * @param sysRole
+     * @return
+     */
     @Override
-    public int updateByPrimaryKey(SysRole record) {
-        return sysRoleMapper.updateByPrimaryKey(record);
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateByRoleId(SysRole sysRole) {
+        boolean bol = baseMapper.updateById(sysRole) > 0;
+        if (bol) {
+            //清除原关联权限
+            batchDeleteRolePermissionByRole(sysRole.getId());
+
+            //新增关联权限
+            String permissionIds = sysRole.getPermissionIds();
+            batchInsertRolePermissionByRole(sysRole.getId(), permissionIds);
+        }
+
+        return bol;
     }
+
+    /**
+     * 删除
+     *
+     * @param roleId
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean deleteByRoleId(Integer roleId) {
+        boolean bol = baseMapper.deleteById(roleId) > 0;
+        if (bol) {
+            batchDeleteRolePermissionByRole(roleId);
+        }
+
+        return bol;
+    }
+
 
     //根据角色id,删除所有角色权限关联信息
-    public void batchDeleteRolePermissionByRole(Integer role_id){
-        List<SysRolePermission> rolePermissions = sysRolePermissionService.findPermissionsByRole(role_id);
-        for(SysRolePermission rp : rolePermissions){
-            sysRolePermissionService.deleteByPrimaryKey(rp.getId());
+    private void batchDeleteRolePermissionByRole(Integer roleId) {
+        List<SysRolePermission> rolePermissionList = sysRolePermissionMapper.selectList(new LambdaQueryWrapper<SysRolePermission>().eq(SysRolePermission::getRoleId, roleId));
+        for (SysRolePermission rolePermission : rolePermissionList) {
+            sysRolePermissionMapper.deleteById(rolePermission.getId());
         }
     }
 
     //根据角色id,新增所有角色权限关联信息
-    public void batchInsertRolePermissionByRole(Integer role_id , String str){
-        String[] ids = str.split(",");
-        SysRolePermission sysRolePermission = new SysRolePermission();
+    private void batchInsertRolePermissionByRole(Integer roleId, String str) {
+        List<SysRolePermission> rolePermissionList = new ArrayList<>();
 
-        //批量新增新的权限与角色关联关系
-        for(String id : ids){
+        String[] ids = str.split(",");
+        //构造数据
+        for (String id : ids) {
+            SysRolePermission sysRolePermission = new SysRolePermission();
             sysRolePermission.setPermissionId(Integer.valueOf(id));
-            sysRolePermission.setRoleId(role_id);
-            sysRolePermissionService.insert(sysRolePermission);
+            rolePermissionList.add(sysRolePermission);
         }
+        sysRolePermissionMapper.insertBatch(rolePermissionList, roleId);
     }
 }

@@ -1,19 +1,18 @@
 package com.ivan.blog.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ivan.blog.model.BlogArticle;
-import com.ivan.blog.model.BlogArticlePicture;
-import com.ivan.blog.model.dto.BlogArticleDTO;
+import com.ivan.blog.entity.BlogArticle;
+import com.ivan.blog.entity.dto.BlogArticleDTO;
 
 import java.util.List;
-import java.util.Map;
 
-/*
+/**
  *  @Author: Ivan
  *  @Description:
  *  @Date: 2019/11/28 16:14
  */
 public interface BlogArticleService extends IService<BlogArticle> {
+
     boolean saveByArticle(BlogArticleDTO blogArticleDTO);
 
     boolean updateByArticle(BlogArticleDTO blogArticleDTO);

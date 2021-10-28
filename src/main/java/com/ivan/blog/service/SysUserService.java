@@ -1,34 +1,29 @@
 package com.ivan.blog.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ivan.blog.model.SysUser;
-import com.ivan.blog.model.dto.SysUserDTO;
+import com.ivan.blog.entity.SysUser;
+import com.ivan.blog.entity.dto.SysUserDTO;
+import com.ivan.blog.entity.vo.SysUserVO;
 
 import java.util.List;
 
-/*
+/**
  *  @Author: Ivan
  *  @Description:
  *  @Date: 2019/10/31 09:37
  */
-public interface SysUserService {
-    SysUser userLogin(String username , String password);
+public interface SysUserService extends IService<SysUser> {
 
     SysUser findUserByName(String username);
 
-    List<String> findRolesByUsername(String username);
+    SysUserVO findUserById(Integer id);
 
-    List<SysUserDTO> list();
+    List<SysUserVO> selectUserAndRoleList();
 
-    int deleteByPrimaryKey(Integer id);
+    boolean insertByUserId(SysUserDTO sysUserDTO);
 
-    int insert(SysUserDTO record);
+    boolean updateByUserId(SysUserDTO sysUserDTO);
 
-    int insertSelective(SysUserDTO record);
+    boolean deleteByUserId(Integer id);
 
-    SysUserDTO selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(SysUserDTO record);
-
-    int updateByPrimaryKey(SysUserDTO record);
 }

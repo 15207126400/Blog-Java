@@ -14,22 +14,23 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/*
- *  @Author: Ivan
- *  @Description:   获取请求IP地址、浏览器相关信息
- *  @Date: 2019/12/28 19:32
+/**
+ * @Author: Ivan
+ * @Description: 获取请求IP地址、浏览器相关信息
+ * @Date: 2019/12/28 19:32
  */
 @Slf4j
 public class IpAndAddrUtil {
 
     /**
      * 获取客户端ip地址
-     * @param request   请求对象
-     * @return          实际ip
+     *
+     * @param request 请求对象
+     * @return 实际ip
      */
     public static String getCliectIp(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
-        log.info("当前请求ip为：{}" , ip);
+
         if (ip == null || ip.trim() == "" || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("X-Real-IP");
         }
@@ -43,7 +44,7 @@ public class IpAndAddrUtil {
             ip = request.getRemoteAddr();
         }
 
-        // 多个路由时，取第一个非unknown的ip
+        //多个路由时，取第一个非unknown的ip
         final String[] arr = ip.split(",");
         for (final String str : arr) {
             if (!"unknown".equalsIgnoreCase(str)) {
@@ -51,6 +52,8 @@ public class IpAndAddrUtil {
                 break;
             }
         }
+        log.info("当前请求ip为：{}", ip);
+
         return ip;
     }
 
@@ -75,7 +78,7 @@ public class IpAndAddrUtil {
         Browser browser = userAgent.getBrowser();
         //获取浏览器版本号
         Version version = browser.getVersion(header);
-        if(version != null){
+        if (version != null) {
             return version.getVersion();
         }
 
@@ -93,12 +96,9 @@ public class IpAndAddrUtil {
     }
 
     /**
-     * @param urlStr
-     *   请求的地址
-     * @param content
-     *   请求的参数 格式为：name=xxx&pwd=xxx
-     * @param encoding
-     *   服务器端请求编码。如GBK,UTF-8等
+     * @param urlStr   请求的地址
+     * @param content  请求的参数 格式为：name=xxx&pwd=xxx
+     * @param encoding 服务器端请求编码。如GBK,UTF-8等
      * @return
      */
     private static String getResult(String urlStr, String content, String encoding) {
@@ -142,15 +142,15 @@ public class IpAndAddrUtil {
     /**
      * unicode 转换成 中文
      *
-     * @author fanhui 2007-3-15
      * @param theString
      * @return
+     * @author fanhui 2007-3-15
      */
     public static String decodeUnicode(String theString) {
         char aChar;
         int len = theString.length();
         StringBuffer outBuffer = new StringBuffer(len);
-        for (int x = 0; x < len;) {
+        for (int x = 0; x < len; ) {
             aChar = theString.charAt(x++);
             if (aChar == '\\') {
                 aChar = theString.charAt(x++);

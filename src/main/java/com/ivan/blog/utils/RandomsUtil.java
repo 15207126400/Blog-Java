@@ -2,7 +2,7 @@ package com.ivan.blog.utils;
 
 import java.util.Random;
 
-/*
+/**
  *  @Author: Ivan
  *  @Description:   随机数工具类
  *  @Date: 2019/11/29 17:01

@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ivan.blog.dao.BlogArticleMapper;
-import com.ivan.blog.dao.BlogCommentMapper;
-import com.ivan.blog.model.BlogArticle;
-import com.ivan.blog.model.BlogComment;
-import com.ivan.blog.model.vo.BlogCommentVO;
+import com.ivan.blog.mapper.BlogArticleMapper;
+import com.ivan.blog.mapper.BlogCommentMapper;
+import com.ivan.blog.entity.BlogArticle;
+import com.ivan.blog.entity.BlogComment;
+import com.ivan.blog.entity.vo.BlogCommentVO;
 import com.ivan.blog.service.BlogCommentService;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang.StringUtils;
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/*
+/**
  *  @Author: Ivan
  *  @Description:
  *  @Date: 2019/12/17 21:16
