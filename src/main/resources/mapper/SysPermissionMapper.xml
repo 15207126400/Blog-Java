@@ -13,6 +13,7 @@
         id, type, name, permission, url
     </sql>
 
+    <!--查找权限Url-->
     <select id="findPermissionByUrl" resultType="com.ivan.blog.entity.SysPermission">
         select sp.* from sys_permission sp left join sys_role_permission srp
             on sp.id = srp.permission_id

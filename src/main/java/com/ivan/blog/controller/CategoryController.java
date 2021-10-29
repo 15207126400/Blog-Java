@@ -64,7 +64,7 @@ public class CategoryController {
     @RequestMapping("/categoryPut/{id}")
     @RequiresPermissions("category:put")
     public String categoryPut(Model model, @PathVariable("id") Integer id) {
-        model.addAttribute("category", blogCategoryService.getById(id));
+        model.addAttribute("category", blogCategoryService.categoryById(id));
 
         return "category/categoryPut";
     }

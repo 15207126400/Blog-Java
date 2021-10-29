@@ -20,7 +20,7 @@ body {
     width: 100%;
     margin: 10px 20px 10px 0px;
     background-color: transparent;
-    padding: 10px;
+    /*padding: 10px;*/
 }
 
 .text-center {
@@ -269,7 +269,7 @@ footer p {
     height: 70px;
     font-size: 25px;
     font-weight: 700;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     line-height: 30px;
 }
 
@@ -458,8 +458,7 @@ ul.nav.nav-second-level.collapse.in {
     #page-wrapper {
         margin: 0 0 0 260px;
         padding: 15px 30px;
-        /*min-height: 1200px;*/
-
+        min-height: 700px;
     }
 
 

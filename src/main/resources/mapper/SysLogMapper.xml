@@ -17,4 +17,8 @@
         id, username, operation, method, ip, address, browser, system, create_time
     </sql>
 
+    <!--重置日志表-->
+    <select id="reset" resultType="java.lang.Integer">
+        truncate sys_log
+    </select>
 </mapper>

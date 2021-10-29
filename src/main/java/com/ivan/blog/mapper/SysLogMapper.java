@@ -6,7 +6,9 @@ import org.apache.ibatis.annotations.Select;
 
 public interface SysLogMapper extends BaseMapper<SysLog> {
 
-    //重置操作日志数据
-    @Select("truncate sys_log")
+    /**
+     * 重置操作日志数据
+     * @return
+     */
     int reset();
 }

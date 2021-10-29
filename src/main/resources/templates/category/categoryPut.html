@@ -36,12 +36,14 @@
                                         <div class="form-group">
                                             <label>创建时间</label>
                                             <input class="form-control" name="createTime" type="text"
-                                                   disabled="disabled" th:value="${category.createTime}">
+                                                   disabled="disabled"
+                                                   th:value="${#dates.format(category.createTime, 'yyyy-MM-dd HH:mm:ss')}">
                                         </div>
                                         <div class="form-group">
                                             <label>更新时间</label>
                                             <input class="form-control" name="updateTime" type="text"
-                                                   disabled="disabled" th:value="${category.updateTime}">
+                                                   disabled="disabled"
+                                                   th:value="${#dates.format(category.updateTime, 'yyyy-MM-dd HH:mm:ss')}">
                                         </div>
                                         <button type="submit" class="btn btn-default" onclick="sendAjax()">提交</button>
                                         <button type="reset" class="btn btn-default">重置</button>

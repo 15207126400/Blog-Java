@@ -13,9 +13,31 @@
         id, name, number, create_time, update_time
     </sql>
 
+    <!--查询标签详情(关联文章数量)-->
+    <select id="categoryById" resultType="com.ivan.blog.entity.BlogCategory">
+        select bc.id,
+               bc.name,
+               (select count(*) from blog_article_category bac where bc.id = bac.category_id) as number,
+               bc.create_time,
+               bc.update_time
+        from blog_category bc
+        where bc.id = #{id}
+    </select>
+
+    <!--查询标签列表(关联文章数量)-->
+    <select id="categoryList" resultType="com.ivan.blog.entity.BlogCategory">
+        select bc.id,
+               bc.name,
+               (select count(*) from blog_article_category bac where bc.id = bac.category_id) as number,
+               bc.create_time,
+               bc.update_time
+        from blog_category bc
+    </select>
+
+    <!--通过文章id查询标签集合-->
     <select id="selectCategoryByArticel" resultType="com.ivan.blog.entity.BlogCategory">
         select bc.*
-        FROM blog_category bc
+        from blog_category bc
                  left join blog_article_category b on b.category_id = bc.id
                  left join blog_article a on a.id = b.article_id
         where a.id = #{id}

@@ -2,12 +2,22 @@ package com.ivan.blog.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ivan.blog.entity.BlogCategory;
-import org.apache.ibatis.annotations.Select;
+
 import java.util.List;
 
 public interface BlogCategoryMapper extends BaseMapper<BlogCategory> {
 
-    @Select("select bc.id,bc.name,(select count(*) from blog_article_category bac where bc.id = bac.category_id) as number,bc.create_time,bc.update_time FROM blog_category bc")
+    /**
+     * 查询标签详情(关联文章数量)
+     * @param id
+     * @return
+     */
+    BlogCategory categoryById(Integer id);
+
+    /**
+     * 查询标签列表(关联文章数量)
+     * @return
+     */
     List<BlogCategory> categoryList();
 
     /**

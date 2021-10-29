@@ -21,6 +21,20 @@
         ba.id, ba.filename, ba.img, ba.title, ba.summary, ba.is_top, ba.traffic, ba.create_time, ba.update_time
     </sql>
 
+    <!--查询文章详情-->
+    <select id="selectById" resultType="com.ivan.blog.entity.dto.BlogArticleDTO">
+        select ba.*, bac.content from blog_article ba
+            left join blog_article_content bac on ba.id = bac.article_id
+        where ba.id = #{id}
+    </select>
+
+    <!--随机查询三条文章信息(博客列表页)-->
+    <select id="selectListByRand" resultType="com.ivan.blog.entity.BlogArticle">
+        select * from blog_article
+        order by rand() limit 3
+    </select>
+
+    <!--根据文章分类查询文章列表-->
     <select id="selectListByCategory" resultType="com.ivan.blog.entity.dto.BlogArticleDTO">
         select
         <include refid="Join_Column_List"/>

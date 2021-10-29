@@ -5,7 +5,6 @@ import com.ivan.blog.entity.BlogCategory;
 import com.ivan.blog.mapper.BlogCategoryMapper;
 import com.ivan.blog.service.BlogCategoryService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,21 +18,25 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class BlogCategoryServiceImpl extends ServiceImpl<BlogCategoryMapper, BlogCategory> implements BlogCategoryService {
-    private final BlogCategoryMapper blogCategoryMapper;
-    private final RedisTemplate redisTemplate;
 
+    private final BlogCategoryMapper blogCategoryMapper;
+
+    /**
+     * 查询标签详情(关联文章数量)
+     * @param id
+     * @return
+     */
+    @Override
+    public BlogCategory categoryById(Integer id) {
+        return blogCategoryMapper.categoryById(id);
+    }
+
+    /**
+     * 查询标签列表(关联文章数量)
+     * @return
+     */
     @Override
     public List<BlogCategory> categoryList() {
-        /*String key = RedisUtil.getKeyWithMethod("selectListByCategory");
-        Boolean hasflag = redisTemplate.hasKey(key);
-        ValueOperations<String, List<BlogCategory>> redis = redisTemplate.opsForValue();
-        if(hasflag){
-            return redis.get(key);
-        } else {
-            redis.set(key,blogCategoryMapper.categoryList());
-            return redis.get(key);
-        }*/
-
         return blogCategoryMapper.categoryList();
     }
 

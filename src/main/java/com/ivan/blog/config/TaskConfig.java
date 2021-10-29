@@ -1,10 +1,8 @@
 package com.ivan.blog.config;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ivan.blog.entity.SysTimed;
 import com.ivan.blog.mapper.SysLogMapper;
 import com.ivan.blog.mapper.SysTimedMapper;
-import com.ivan.blog.entity.SysTimed;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +31,7 @@ public class TaskConfig implements SchedulingConfigurer {
     @Override
     public void configureTasks(ScheduledTaskRegistrar scheduledTaskRegistrar) {
         //TODO 操作日志定时清理任务, 此业务需要调整
-        //logTask(scheduledTaskRegistrar);
+        logTask(scheduledTaskRegistrar);
     }
 
     /**
@@ -51,10 +49,8 @@ public class TaskConfig implements SchedulingConfigurer {
             }
         };
 
-        LambdaQueryWrapper<SysTimed> lambdaQueryWrapper = Wrappers.<SysTimed>lambdaQuery()
-                .eq(SysTimed::getId, 1)
-                .eq(SysTimed::getStatus, 1);
-        SysTimed timed = sysTimedMapper.selectOne(lambdaQueryWrapper);
+        //获取定时配置
+        SysTimed timed = sysTimedMapper.selectById(1);
         if (timed != null) {
             //任务触发器
             Trigger trigger = triggerContext -> {

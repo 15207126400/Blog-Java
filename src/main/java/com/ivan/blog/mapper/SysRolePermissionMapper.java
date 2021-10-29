@@ -8,6 +8,11 @@ import java.util.List;
 
 public interface SysRolePermissionMapper extends BaseMapper<SysRolePermission> {
 
+    /**
+     * 批量插入
+     * @param list
+     * @param roleId
+     */
     void insertBatch(@Param("list") List<SysRolePermission> list, @Param("roleId") Integer roleId);
 
 }

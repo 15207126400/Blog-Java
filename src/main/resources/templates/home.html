@@ -38,48 +38,56 @@
 
             <div class="row">
                 <div class="col-md-3 col-sm-12 col-xs-12">
-                    <div class="panel panel-primary text-center no-boder bg-color-green">
-                        <div class="panel-body">
-                            <img class="top-img" src="http://1.117.251.254:9000/system/user.png"/>
-                            <h3 th:text="${blogBackOv.userCount}"></h3>
+                    <a href="/user/userList" style="text-decoration:none">
+                        <div class="panel panel-primary text-center no-boder bg-color-green">
+                            <div class="panel-body">
+                                <img class="top-img" src="http://1.117.251.254:9000/system/user.png"/>
+                                <h3 th:text="${blogBackOv.userCount}"></h3>
+                            </div>
+                            <div class="panel-footer back-footer-green">
+                                用户
+                            </div>
                         </div>
-                        <div class="panel-footer back-footer-green">
-                            用户
-                        </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-md-3 col-sm-12 col-xs-12">
-                    <div class="panel panel-primary text-center no-boder bg-color-blue">
-                        <div class="panel-body">
-                            <img class="top-img" src="http://1.117.251.254:9000/system/role.png"/>
-                            <h3 th:text="${blogBackOv.roleCount}"></h3>
+                    <a href="/role/roleList" style="text-decoration:none">
+                        <div class="panel panel-primary text-center no-boder bg-color-blue">
+                            <div class="panel-body">
+                                <img class="top-img" src="http://1.117.251.254:9000/system/role.png"/>
+                                <h3 th:text="${blogBackOv.roleCount}"></h3>
+                            </div>
+                            <div class="panel-footer back-footer-blue">
+                                角色
+                            </div>
                         </div>
-                        <div class="panel-footer back-footer-blue">
-                            角色
-                        </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-md-3 col-sm-12 col-xs-12">
-                    <div class="panel panel-primary text-center no-boder bg-color-red">
-                        <div class="panel-body">
-                            <img class="top-img" src="http://1.117.251.254:9000/system/permiss.png"/>
-                            <h3 th:text="${blogBackOv.permissionCount}"></h3>
+                    <a href="/permission/permissionList" style="text-decoration:none">
+                        <div class="panel panel-primary text-center no-boder bg-color-red">
+                            <div class="panel-body">
+                                <img class="top-img" src="http://1.117.251.254:9000/system/permiss.png"/>
+                                <h3 th:text="${blogBackOv.permissionCount}"></h3>
+                            </div>
+                            <div class="panel-footer back-footer-red">
+                                权限
+                            </div>
                         </div>
-                        <div class="panel-footer back-footer-red">
-                            权限
-                        </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-md-3 col-sm-12 col-xs-12">
-                    <div class="panel panel-primary text-center no-boder bg-color-brown">
-                        <div class="panel-body">
-                            <img class="top-img" src="http://1.117.251.254:9000/system/log.png"/>
-                            <h3 th:text="${blogBackOv.logCount}"></h3>
+                    <a href="/log/logList" style="text-decoration:none">
+                        <div class="panel panel-primary text-center no-boder bg-color-brown">
+                            <div class="panel-body">
+                                <img class="top-img" src="http://1.117.251.254:9000/system/log.png"/>
+                                <h3 th:text="${blogBackOv.logCount}"></h3>
+                            </div>
+                            <div class="panel-footer back-footer-brown">
+                                日志
+                            </div>
                         </div>
-                        <div class="panel-footer back-footer-brown">
-                            日志
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -90,7 +98,7 @@
                         <div class="panel-heading app-row-between-layout">
                             网站访问量
                             <div class="app-row-start-left">
-                                访问总量:
+                                历史访问总量:&nbsp;
                                 <h5 th:text="${totalCount}"></h5>
                             </div>
                         </div>

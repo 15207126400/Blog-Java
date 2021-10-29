@@ -11,8 +11,17 @@ import java.util.List;
 
 public interface BlogCommentMapper extends BaseMapper<BlogComment> {
 
+    /**
+     * 查询评论列表
+     * @return
+     */
     List<BlogComment> selectList();
 
+    /**
+     * 查询评论详情
+     * @param id
+     * @return
+     */
     BlogComment selectById(Integer id);
 
     /**
@@ -28,5 +37,5 @@ public interface BlogCommentMapper extends BaseMapper<BlogComment> {
      * @param articleId
      * @return
      */
-    IPage<BlogComment> mySelectPage(Page page, @Param("blogComment") Integer articleId);
+    IPage<BlogComment> mySelectPage(Page page, @Param("articleId") Integer articleId);
 }
