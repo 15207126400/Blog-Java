@@ -20,8 +20,8 @@ import java.util.Properties;
 public class MailUtil {
 
     private static final String HOST = "smtp.163.com";
-    private static final String USERNAME = "15207126400@163.com";
-    private static final String PASSWORD = "GTZJMOQDUGVTHHIJ";
+    private static final String USERNAME = "ivanblog999@163.com";
+    private static final String PASSWORD = "RHAZTXYNFAHZZXBU";
 
     public static void sendMail(String subject, String text, String toUsername) {
         Properties props = new Properties();

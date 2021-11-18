@@ -176,6 +176,13 @@
             <artifactId>UserAgentUtils</artifactId>
             <version>1.2.4</version>
         </dependency>
+
+        <!--Http请求-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>4.1.0</version>
+        </dependency>
     </dependencies>
 
     <build>

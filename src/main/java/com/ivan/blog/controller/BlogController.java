@@ -5,23 +5,30 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ivan.blog.Exception.Enum.CommonEnum;
 import com.ivan.blog.annotation.MyLog;
 import com.ivan.blog.annotation.RequestLimit;
+import com.ivan.blog.constants.BlogConstants;
+import com.ivan.blog.entity.BlogAccount;
 import com.ivan.blog.entity.BlogArticle;
 import com.ivan.blog.entity.BlogCategory;
 import com.ivan.blog.entity.BlogComment;
 import com.ivan.blog.entity.dto.BlogArticleDTO;
 import com.ivan.blog.entity.vo.BlogCommentVO;
+import com.ivan.blog.minio.MinioTemplate;
 import com.ivan.blog.service.*;
 import com.ivan.blog.utils.R;
+import com.ivan.blog.validation.Save;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: Ivan
@@ -41,6 +48,8 @@ public class BlogController {
     private final StatisticsService statisticsService;
     private final VisitService visitService;
     private final SignService signService;
+
+    private final MinioTemplate minioTemplate;
 
     /**
      * 访问博客首页
@@ -207,9 +216,72 @@ public class BlogController {
     @RequestMapping("/getToken")
     @ResponseBody
     public R<String> getToken(String code) {
-        String result = signService.githubSign(code);
 
-        return R.ok(result);
+        return signService.githubSign(code);
     }
 
+    /**
+     * 注册账号
+     * @param blogAccount
+     * @return
+     */
+    @RequestMapping("/register")
+    @ResponseBody
+    public R register(@Validated(Save.class) BlogAccount blogAccount) {
+
+        return signService.register(blogAccount);
+    }
+
+    /**
+     * 修改用户信息
+     * @param blogAccount
+     * @return
+     */
+    @RequestMapping("/updateAccount")
+    @ResponseBody
+    public R updateAccount(BlogAccount blogAccount) {
+
+        return signService.updateAccount(blogAccount);
+    }
+
+    /**
+     * 账密登录
+     * @param blogAccount
+     * @return
+     */
+    @RequestMapping("/login")
+    @ResponseBody
+    public R login(BlogAccount blogAccount) {
+
+        return signService.login(blogAccount);
+    }
+
+    /**
+     * 查询用户信息
+     * @param username
+     * @return
+     */
+    @RequestMapping("/getUserinfo")
+    @ResponseBody
+    public R getUserinfo(String username){
+        return signService.getUserinfo(username);
+    }
+
+    /**
+     * 上传头像
+     * @param file
+     * @return
+     */
+    @RequestMapping("/uploadAvatar")
+    @ResponseBody
+    public R uploadAvatar(MultipartFile file) {
+        String avatar = null;
+        if (!file.isEmpty()) {
+            //上传
+            String filename = minioTemplate.upload(BlogConstants.MINIO_ACCOUNT_BUCKET, file);
+            avatar = BlogConstants.MINIO_MAIN_PATH + BlogConstants.MINIO_ACCOUNT_BUCKET + BlogConstants.ROOT + filename;
+        }
+
+        return R.ok(avatar);
+    }
 }
