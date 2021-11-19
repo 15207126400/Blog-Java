@@ -4,7 +4,6 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.google.common.collect.ImmutableMap;
 import com.ivan.blog.entity.BlogAccount;
 import com.ivan.blog.mapper.BlogAccountMapper;
@@ -122,13 +121,13 @@ public class SignServiceImpl implements SignService {
     }
 
     /**
-     * 注册账号
+     * 注册或更新账号信息
      *
      * @param blogAccount
      * @return
      */
     @Override
-    public R register(BlogAccount blogAccount) {
+    public R registerOrUpdateAccount(BlogAccount blogAccount) {
         //校验昵称
         String regexEmail = "/^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$/";
         Pattern patternEmail = Pattern.compile(regexEmail);
@@ -147,51 +146,40 @@ public class SignServiceImpl implements SignService {
             return R.error("昵称只允许输入汉字、英文或者数字！");
         }
 
-        BlogAccount account = blogAccountMapper.selectOne(new LambdaQueryWrapper<BlogAccount>()
-                .eq(BlogAccount::getUsername, blogAccount.getUsername()).eq(BlogAccount::getDelFlag, "0"));
-        if (!Objects.isNull(account)) {
-            return R.error("该账号已被注册！");
-        }
-
-        //注册
-        blogAccount.setLastLoginTime(new Date());
-        boolean bol = blogAccountMapper.insert(blogAccount) > 0;
-        if (bol) {
-            //推送邮件
-            StringBuilder sb = new StringBuilder();
-            String title = "注册信息推送";
-            sb.append("注册成功！");
-            sb.append("\r\n");
-            sb.append("您的账号信息如下：");
-            sb.append("\r\n");
-            sb.append("账号：" + blogAccount.getUsername());
-            sb.append("\r\n");
-            sb.append("密码：" + blogAccount.getPassword());
-            sb.append("\r\n");
-            sb.append("昵称：" + blogAccount.getNickname());
-            if (StringUtils.isNotBlank(blogAccount.getAvatar())) {
-                sb.append("\r\n");
-                sb.append("头像：" + blogAccount.getAvatar());
+        //校验账号是否存在
+        if(Objects.isNull(blogAccount.getId())){//表示注册
+            BlogAccount account = blogAccountMapper.selectOne(new LambdaQueryWrapper<BlogAccount>()
+                    .eq(BlogAccount::getUsername, blogAccount.getUsername()).eq(BlogAccount::getDelFlag, "0"));
+            if (!Objects.isNull(account)) {
+                return R.error("该账号已被注册！");
             }
-            MailUtil.sendMail(title, sb.toString(), blogAccount.getUsername());
-        }
-        log.info("注册用户信息为: {}", blogAccount);
 
-        return R.ok(blogAccount);
-    }
+            //头像处理
+            if(StringUtils.isBlank(blogAccount.getAvatar())){
+                blogAccount.setAvatar("http://1.117.251.254:9000/system/default_avatar.png");
+            }
 
-    /**
-     * 修改用户信息
-     * @param blogAccount
-     * @return
-     */
-    @Override
-    public R updateAccount(BlogAccount blogAccount) {
-        UpdateWrapper updateWrapper = new UpdateWrapper();
-        updateWrapper.eq("username", blogAccount.getUsername());
-        boolean bol = blogAccountMapper.update(blogAccount, updateWrapper) > 0;
-        if(!bol){
-            return R.error("修改失败");
+            //注册
+            blogAccount.setLastLoginTime(new Date());
+            boolean bol = blogAccountMapper.insert(blogAccount) > 0;
+            if (bol) {
+                //推送邮件
+                StringBuilder sb = new StringBuilder();
+                String title = "注册信息推送";
+                sb.append("注册成功！");
+                sb.append("\r\n");
+                sb.append("您的账号信息如下：");
+                sb.append("\r\n");
+                sb.append("账号：" + blogAccount.getUsername());
+                sb.append("\r\n");
+                sb.append("密码：" + blogAccount.getPassword());
+                sb.append("\r\n");
+                sb.append("昵称：" + blogAccount.getNickname());
+                MailUtil.sendMail(title, sb.toString(), blogAccount.getUsername());
+            }
+            log.info("注册用户信息为: {}", blogAccount);
+        } else {//更新用户信息
+            blogAccountMapper.updateById(blogAccount);
         }
 
         return R.ok(blogAccount);
@@ -225,22 +213,6 @@ public class SignServiceImpl implements SignService {
         //更新最后登录时间
         account.setLastLoginTime(new Date());
         blogAccountMapper.updateById(account);
-
-        return R.ok(account);
-    }
-
-    /**
-     * 查询用户信息
-     * @param username
-     * @return
-     */
-    @Override
-    public R getUserinfo(String username) {
-        BlogAccount account = blogAccountMapper.selectOne(new LambdaQueryWrapper<BlogAccount>()
-                .eq(BlogAccount::getUsername, username).eq(BlogAccount::getDelFlag, "0"));
-        if(Objects.isNull(account)){
-            return R.error("账号不存在！");
-        }
 
         return R.ok(account);
     }

@@ -15,13 +15,11 @@ import com.ivan.blog.entity.vo.BlogCommentVO;
 import com.ivan.blog.minio.MinioTemplate;
 import com.ivan.blog.service.*;
 import com.ivan.blog.utils.R;
-import com.ivan.blog.validation.Save;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -221,27 +219,14 @@ public class BlogController {
     }
 
     /**
-     * 注册账号
+     * 注册或更新账号信息
      * @param blogAccount
      * @return
      */
-    @RequestMapping("/register")
+    @RequestMapping("/registerOrUpdateAccount")
     @ResponseBody
-    public R register(@Validated(Save.class) BlogAccount blogAccount) {
-
-        return signService.register(blogAccount);
-    }
-
-    /**
-     * 修改用户信息
-     * @param blogAccount
-     * @return
-     */
-    @RequestMapping("/updateAccount")
-    @ResponseBody
-    public R updateAccount(BlogAccount blogAccount) {
-
-        return signService.updateAccount(blogAccount);
+    public R registerOrUpdateAccount(BlogAccount blogAccount) {
+        return signService.registerOrUpdateAccount(blogAccount);
     }
 
     /**
@@ -254,17 +239,6 @@ public class BlogController {
     public R login(BlogAccount blogAccount) {
 
         return signService.login(blogAccount);
-    }
-
-    /**
-     * 查询用户信息
-     * @param username
-     * @return
-     */
-    @RequestMapping("/getUserinfo")
-    @ResponseBody
-    public R getUserinfo(String username){
-        return signService.getUserinfo(username);
     }
 
     /**

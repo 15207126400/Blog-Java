@@ -13,16 +13,10 @@ public interface SignService {
     //github三方登录
     R githubSign(String code);
 
-    //注册账号
-    R register(BlogAccount blogAccount);
-
-    //修改用户信息
-    R updateAccount(BlogAccount blogAccount);
+    //注册或更新账号信息
+    R registerOrUpdateAccount(BlogAccount blogAccount);
 
     //账密登录
     R login(BlogAccount blogAccount);
-
-    //获取用户信息
-    R getUserinfo(String username);
 
 }
