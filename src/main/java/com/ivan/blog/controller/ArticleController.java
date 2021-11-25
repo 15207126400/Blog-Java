@@ -5,7 +5,7 @@ import com.ivan.blog.constants.BlogConstants;
 import com.ivan.blog.entity.BlogArticlePicture;
 import com.ivan.blog.entity.BlogCategory;
 import com.ivan.blog.entity.SysDict;
-import com.ivan.blog.entity.dto.BlogArticleDTO;
+import com.ivan.blog.entity.vo.BlogArticleVO;
 import com.ivan.blog.mapper.BlogArticlePictureMapper;
 import com.ivan.blog.minio.MinioTemplate;
 import com.ivan.blog.service.BlogArticleService;
@@ -81,7 +81,7 @@ public class ArticleController {
         model.addAttribute("article", blogArticleService.selectById(id));
         model.addAttribute("categorys", blogCategoryService.list());
         List<Integer> cates = new ArrayList<>();
-        List<BlogCategory> categoryList = blogCategoryService.selectCategoryByArticel(id);
+        List<BlogCategory> categoryList = blogCategoryService.selectCategoryByArticle(id);
         for (BlogCategory item : categoryList) {
             cates.add(item.getId());
         }
@@ -95,30 +95,30 @@ public class ArticleController {
     /**
      * 新增或修改
      *
-     * @param blogArticleDto
+     * @param blogArticleVO
      * @param op             1=新增, 非1=修改
      * @param file
      * @return
      */
     @PostMapping(value = "insertOrUpdate")
     @ResponseBody
-    public Map<String, Object> insertOrUpdate(BlogArticleDTO blogArticleDto, String op, @RequestParam(value = "file") MultipartFile file) {
+    public Map<String, Object> insertOrUpdate(BlogArticleVO blogArticleVO, String op, @RequestParam(value = "file") MultipartFile file) {
         Map<String, Object> map = new HashMap<>();
 
         if (!file.isEmpty()) {
             String filename = minioTemplate.upload(BlogConstants.MINIO_MAIN_BUCKET, file);
             //获取预览地址
             String path = minioTemplate.constructingAccessUrl(BlogConstants.MINIO_MAIN_BUCKET, filename);
-            blogArticleDto.setImg(path);
-            blogArticleDto.setFilename(filename);
+            blogArticleVO.setImg(path);
+            blogArticleVO.setFilename(filename);
         }
         if (op.equals("1")) {
-            boolean result = blogArticleService.saveByArticle(blogArticleDto);
+            boolean result = blogArticleService.saveByArticle(blogArticleVO);
             if (result) {
                 map.put("status", 200);
             }
         } else {
-            boolean result = blogArticleService.updateByArticle(blogArticleDto);
+            boolean result = blogArticleService.updateByArticle(blogArticleVO);
             if (result) {
                 map.put("status", 200);
             }
@@ -137,7 +137,7 @@ public class ArticleController {
     @RequiresPermissions("article:del")
     public Map<String, Integer> articleDel(Integer id) {
         Map<String, Integer> map = new HashMap<>();
-        boolean result = blogArticleService.removeById(id);
+        boolean result = blogArticleService.deleteByArticle(id);
         if (result) {
             map.put("status", 200);
         }

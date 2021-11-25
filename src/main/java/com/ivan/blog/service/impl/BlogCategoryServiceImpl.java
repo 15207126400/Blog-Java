@@ -46,21 +46,9 @@ public class BlogCategoryServiceImpl extends ServiceImpl<BlogCategoryMapper, Blo
      * @return
      */
     @Override
-    public List<BlogCategory> selectCategoryByArticel(Integer id) {
+    public List<BlogCategory> selectCategoryByArticle(Integer id) {
         return blogCategoryMapper.selectCategoryByArticel(id);
     }
 
-    /**
-     * 提取文章标签名称
-     *
-     * @return
-     */
-    public List<String> extCategory(List<BlogCategory> categorys) {
-        List<String> list = new ArrayList<>();
-        for (BlogCategory item : categorys) {
-            list.add(item.getName());
-        }
 
-        return list;
-    }
 }

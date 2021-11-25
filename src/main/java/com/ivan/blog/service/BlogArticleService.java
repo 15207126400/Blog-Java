@@ -1,8 +1,10 @@
 package com.ivan.blog.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ivan.blog.entity.BlogArticle;
-import com.ivan.blog.entity.dto.BlogArticleDTO;
+import com.ivan.blog.entity.vo.BlogArticleVO;
 
 import java.util.List;
 
@@ -13,42 +15,53 @@ import java.util.List;
  */
 public interface BlogArticleService extends IService<BlogArticle> {
 
-    boolean saveByArticle(BlogArticleDTO blogArticleDTO);
-
-    boolean updateByArticle(BlogArticleDTO blogArticleDTO);
-
-    BlogArticleDTO selectById(Integer id);
-
     /**
-     * 轮播图片获取请求 ---- 博客首页
+     * 新增文章
+     * @param blogArticleVO
      * @return
      */
-    List<BlogArticleDTO> getArticleList();
+    boolean saveByArticle(BlogArticleVO blogArticleVO);
 
     /**
-     * 根据文章分类查询文章列表
-     * @param categoryId
+     * 编辑文章
+     * @param blogArticleVO
      * @return
      */
-    List<BlogArticleDTO> selectListByCategory(Integer categoryId);
+    boolean updateByArticle(BlogArticleVO blogArticleVO);
 
     /**
-     * 随机查询三条文章信息 ---- 博客列表页
+     * 删除文章
+     * @param id
+     * @return
+     */
+    boolean deleteByArticle(Integer id);
+
+    /**
+     * 随机查询三条文章信息 ---- 轮播图
      * @return
      */
     List<BlogArticle> selectListByRand();
 
     /**
-     * 获取上一篇博文
-     * @param id
+     * 博客列表(分页)
      * @return
      */
-    BlogArticle selectArticleByBefore(Integer id);
+    IPage<BlogArticleVO> getArticleList(Page page);
 
     /**
-     * 获取下一篇博文
+     * 查看文章详情
      * @param id
      * @return
      */
-    BlogArticle selectArticleByAfter(Integer id);
+    BlogArticleVO selectById(Integer id);
+
+    /**
+     * 根据文章分类查询文章列表
+     * @param page
+     * @param categoryId
+     * @return
+     */
+    IPage<BlogArticleVO> selectListByCategory(Page page, Integer categoryId);
+
+
 }

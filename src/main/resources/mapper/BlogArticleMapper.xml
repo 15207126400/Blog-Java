@@ -21,28 +21,35 @@
         ba.id, ba.filename, ba.img, ba.title, ba.summary, ba.is_top, ba.traffic, ba.create_time, ba.update_time
     </sql>
 
-    <!--查询文章详情-->
-    <select id="selectById" resultType="com.ivan.blog.entity.dto.BlogArticleDTO">
-        select ba.*, bac.content from blog_article ba
-            left join blog_article_content bac on ba.id = bac.article_id
-        where ba.id = #{id}
-    </select>
-
-    <!--随机查询三条文章信息(博客列表页)-->
+    <!--随机查询三条文章信息(首页轮播图)-->
     <select id="selectListByRand" resultType="com.ivan.blog.entity.BlogArticle">
         select * from blog_article
         order by rand() limit 3
     </select>
 
+    <!--博客列表页-->
+    <select id="selectPageForIndex" resultType="com.ivan.blog.entity.vo.BlogArticleVO">
+        select
+        <include refid="Join_Column_List"/>
+        from blog_article ba
+        order by ba.is_top asc, ba.create_time desc
+    </select>
+
     <!--根据文章分类查询文章列表-->
-    <select id="selectListByCategory" resultType="com.ivan.blog.entity.dto.BlogArticleDTO">
+    <select id="selectListByCategory" resultType="com.ivan.blog.entity.vo.BlogArticleVO">
         select
         <include refid="Join_Column_List"/>
         from blog_article ba
         inner join blog_article_category bac on ba.id = bac.article_id
         inner join blog_category bc on bac.category_id = bc.id
         where bc.id = #{categoryId}
-        order by ba.is_top
+        order by ba.is_top asc, ba.create_time desc
     </select>
 
+    <!--查询文章详情-->
+    <select id="selectById" resultType="com.ivan.blog.entity.vo.BlogArticleVO">
+        select ba.*, bac.content from blog_article ba
+        left join blog_article_content bac on ba.id = bac.article_id
+        where ba.id = #{id}
+    </select>
 </mapper>

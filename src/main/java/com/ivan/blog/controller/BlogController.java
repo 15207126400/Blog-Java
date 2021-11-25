@@ -1,16 +1,14 @@
 package com.ivan.blog.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ivan.blog.Exception.Enum.CommonEnum;
 import com.ivan.blog.annotation.MyLog;
 import com.ivan.blog.annotation.RequestLimit;
 import com.ivan.blog.constants.BlogConstants;
-import com.ivan.blog.entity.BlogAccount;
-import com.ivan.blog.entity.BlogArticle;
-import com.ivan.blog.entity.BlogCategory;
-import com.ivan.blog.entity.BlogComment;
-import com.ivan.blog.entity.dto.BlogArticleDTO;
+import com.ivan.blog.entity.*;
+import com.ivan.blog.entity.vo.BlogArticleVO;
 import com.ivan.blog.entity.vo.BlogCommentVO;
 import com.ivan.blog.minio.MinioTemplate;
 import com.ivan.blog.service.*;
@@ -22,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,6 +43,7 @@ public class BlogController {
     private final BlogCategoryService blogCategoryService;
     private final BlogCommentService blogCommentService;
     private final StatisticsService statisticsService;
+    private final BlogHistoryService blogHistoryService;
     private final VisitService visitService;
     private final SignService signService;
 
@@ -69,27 +69,6 @@ public class BlogController {
     }
 
     /**
-     * 获取文章列表
-     *
-     * @return
-     */
-    @RequestMapping("/getArticleList")
-    @ResponseBody
-    public R getArticleList() {
-        List<BlogArticleDTO> result = blogArticleService.getArticleList();
-        if (CollectionUtils.isEmpty(result)) {
-            return R.failed(CommonEnum.ARTICLE_NULL.getResultMsg());
-        }
-        //查询文章分类
-        for (BlogArticleDTO item : result) {
-            List<BlogCategory> categorys = blogCategoryService.selectCategoryByArticel(item.getId());
-            item.setCategory(blogCategoryService.extCategory(categorys).toString());
-        }
-
-        return R.ok(result);
-    }
-
-    /**
      * 推荐文章 ---- 三条数据
      *
      * @return
@@ -106,25 +85,29 @@ public class BlogController {
     }
 
     /**
+     * 获取文章列表
+     *
+     * @return
+     */
+    @RequestMapping("/getArticleList")
+    @ResponseBody
+    public R getArticleList(Page page) {
+        IPage<BlogArticleVO> iPage = blogArticleService.getArticleList(page);
+
+        return R.ok(iPage);
+    }
+
+    /**
      * 根据文章标签查询文章列表
      *
      * @return
      */
     @RequestMapping("/getArticleListByCategory")
     @ResponseBody
-    public R getArticleListByCategory(Integer categoryId) {
-        List<BlogArticleDTO> result = blogArticleService.selectListByCategory(categoryId);
-        if (CollectionUtils.isEmpty(result)) {
-            return R.failed(CommonEnum.ARTICLE_NULL.getResultMsg());
-        }
+    public R getArticleListByCategory(Page page, @RequestParam("categoryId") Integer categoryId) {
+        IPage<BlogArticleVO> iPage = blogArticleService.selectListByCategory(page, categoryId);
 
-        //查询文章分类
-        for (BlogArticleDTO item : result) {
-            List<BlogCategory> categorys = blogCategoryService.selectCategoryByArticel(item.getId());
-            item.setCategory(blogCategoryService.extCategory(categorys).toString());
-        }
-
-        return R.ok(result);
+        return R.ok(iPage);
     }
 
     /**
@@ -136,16 +119,9 @@ public class BlogController {
     @RequestMapping("/getArticle")
     @ResponseBody
     public R getArticle(Integer id) {
-        BlogArticleDTO result = blogArticleService.selectById(id);
-        List<BlogCategory> categorys = blogCategoryService.selectCategoryByArticel(id);
-        //分类集合
-        result.setCategory(blogCategoryService.extCategory(categorys).toString());
-        //上一篇博文
-        result.setBeforeArticle(blogArticleService.selectArticleByBefore(id));
-        //下一篇博文
-        result.setAfterArticle(blogArticleService.selectArticleByAfter(id));
+        BlogArticleVO blogArticleVO = blogArticleService.selectById(id);
 
-        return R.ok(result);
+        return R.ok(blogArticleVO);
     }
 
     /**
@@ -201,6 +177,19 @@ public class BlogController {
     @ResponseBody
     public R getStatistical() {
         Map<String, Integer> result = statisticsService.blogOv();
+
+        return R.ok(result);
+    }
+
+    /**
+     * 获取历史记录列表
+     *
+     * @return
+     */
+    @RequestMapping("/getHistoryList")
+    @ResponseBody
+    public R getHistoryList() {
+        List<BlogHistory> result = blogHistoryService.list(Wrappers.emptyWrapper());
 
         return R.ok(result);
     }

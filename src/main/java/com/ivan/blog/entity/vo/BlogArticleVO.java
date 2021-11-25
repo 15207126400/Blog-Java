@@ -1,4 +1,4 @@
-package com.ivan.blog.entity.dto;
+package com.ivan.blog.entity.vo;
 
 import com.ivan.blog.entity.BlogArticle;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class BlogArticleDTO extends BlogArticle {
+public class BlogArticleVO extends BlogArticle {
 
     private String category;
 
