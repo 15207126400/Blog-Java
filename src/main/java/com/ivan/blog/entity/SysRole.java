@@ -25,10 +25,4 @@ public class SysRole implements Serializable {
 
     private String permissionIds;
 
-    //角色 -- 权限关系：多对多关系;
-//    private List<SysPermission> permissions;
-//
-//    // 一个角色对应多个用户
-//    private List<SysUser> userInfos;
-
 }
