@@ -42,8 +42,8 @@ spring:
   redis:
     database: 0
     host: redis
-    port: 6379
-    password: 123456
+    port: 6637
+    password: 135555
     timeout: 0
     jedis:
       pool:

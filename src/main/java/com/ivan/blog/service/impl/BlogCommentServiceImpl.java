@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ivan.blog.Exception.BizException;
 import com.ivan.blog.mapper.BlogArticleMapper;
 import com.ivan.blog.mapper.BlogCommentMapper;
 import com.ivan.blog.entity.BlogArticle;
@@ -48,6 +49,14 @@ public class BlogCommentServiceImpl extends ServiceImpl<BlogCommentMapper, BlogC
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void postComment(BlogComment blogComment){
+        //校验
+        if(StringUtils.isBlank(blogComment.getName())){
+            throw new BizException("昵称不能为空哦！");
+        }
+        if(StringUtils.isBlank(blogComment.getContent())){
+            throw new BizException("评论不能为空哦！");
+        }
+
         //获取文章信息并存储
         BlogArticle article = blogArticleMapper.selectById(blogComment.getArticleId());
         blogComment.setArticleTitle(article.getTitle());
@@ -59,11 +68,6 @@ public class BlogCommentServiceImpl extends ServiceImpl<BlogCommentMapper, BlogC
                     .eq(BlogComment::getParentId,0);
             Integer count = blogCommentMapper.selectCount(queryWrapper);
             blogComment.setLadder(count + 1);
-        }
-
-        //如果没有昵称,则设置默认昵称
-        if(StringUtils.isBlank(blogComment.getName())){
-            blogComment.setName("匿名用户");
         }
 
         //保存评论
