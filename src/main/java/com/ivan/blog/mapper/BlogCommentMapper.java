@@ -38,4 +38,10 @@ public interface BlogCommentMapper extends BaseMapper<BlogComment> {
      * @return
      */
     IPage<BlogComment> mySelectPage(Page page, @Param("articleId") Integer articleId);
+
+    /**
+     * 查询最新的五条留言
+     * @return
+     */
+    List<BlogComment> getCommentListByNew();
 }

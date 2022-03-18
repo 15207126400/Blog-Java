@@ -109,6 +109,17 @@ public class BlogCommentServiceImpl extends ServiceImpl<BlogCommentMapper, BlogC
         return iPageVo;
     }
 
+    /**
+     * 获取最新评论列表
+     * @return
+     */
+    @Override
+    public List<BlogComment> getCommentListByNew() {
+        List<BlogComment> result = blogCommentMapper.getCommentListByNew();
+
+        return result;
+    }
+
     //递归
     private void recursiveComments(List<BlogCommentVO> blogCommentList){
         if (blogCommentList.size() > 0) {

@@ -23,4 +23,5 @@ public interface BlogCommentService extends IService<BlogComment> {
 
     IPage<BlogCommentVO> selectPage(Page page, Integer articleId);
 
+    List<BlogComment> getCommentListByNew();
 }

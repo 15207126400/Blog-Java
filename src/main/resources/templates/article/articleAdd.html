@@ -39,8 +39,7 @@
                                             <label>文章类型</label>
                                             <div style="width:600px;" class="form-group">
                                                 <label th:each="category:${categorys}" class="checkbox">
-                                                    <input name="category" type="checkbox" th:value="${category.id}"
-                                                           th:text="${category.name}"/>
+                                                    <input name="category" type="radio" th:value="${category.id}" th:text="${category.name}"/>
                                                 </label>
                                             </div>
                                         </div>

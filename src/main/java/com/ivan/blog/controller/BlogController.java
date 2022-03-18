@@ -169,6 +169,19 @@ public class BlogController {
     }
 
     /**
+     * 获取最新评论列表
+     *
+     * @return
+     */
+    @RequestMapping("/getCommentListByNew")
+    @ResponseBody
+    public R getCommentListByNew() {
+        List<BlogComment> result = blogCommentService.getCommentListByNew();
+
+        return R.ok(result);
+    }
+
+    /**
      * 统计各数量
      *
      * @return

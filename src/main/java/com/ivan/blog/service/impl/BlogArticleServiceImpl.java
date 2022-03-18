@@ -47,10 +47,19 @@ public class BlogArticleServiceImpl extends ServiceImpl<BlogArticleMapper, BlogA
         BeanUtils.copyProperties(blogArticleVO,blogArticle);
         int num = blogArticleMapper.insert(blogArticle);
 
-        //批量插入
-        if(StringUtils.isNotBlank(blogArticleVO.getCategory())){
-            insertBatchArticleCategory(blogArticleVO.getCategory(),blogArticle.getId());
-        }
+        //文章分类关联表存储
+        BlogArticleCategory blogArticleCategory = new BlogArticleCategory();
+        blogArticleCategory.setArticleId(blogArticle.getId());
+        blogArticleCategory.setCategoryId(Integer.valueOf(blogArticleVO.getCategory()));
+        blogArticleCategoryMapper.insert(blogArticleCategory);
+
+        //更新分类关联文章数量
+        Integer count = blogArticleCategoryMapper.selectCount(new LambdaQueryWrapper<BlogArticleCategory>()
+                .eq(BlogArticleCategory::getArticleId, blogArticle.getId()));
+
+        BlogCategory blogCategory = blogCategoryMapper.selectById(Integer.valueOf(blogArticleVO.getCategory()));
+        blogCategory.setNumber(String.valueOf(count));
+        blogCategoryMapper.updateById(blogCategory);
 
         return num > 0;
     }
@@ -84,12 +93,23 @@ public class BlogArticleServiceImpl extends ServiceImpl<BlogArticleMapper, BlogA
         blogArticle.setUpdateTime(new Date());
 
         //删除该文章分类信息
-        LambdaQueryWrapper<BlogArticleCategory> lambdaQueryCategory = Wrappers.<BlogArticleCategory>lambdaQuery()
-                .eq(BlogArticleCategory::getArticleId, blogArticleVO.getId());
-        blogArticleCategoryMapper.delete(lambdaQueryCategory);
-        //批量插入
         if(StringUtils.isNotBlank(blogArticleVO.getCategory())){
-            insertBatchArticleCategory(blogArticleVO.getCategory(),blogArticle.getId());
+            LambdaQueryWrapper<BlogArticleCategory> lambdaQueryCategory = Wrappers.<BlogArticleCategory>lambdaQuery()
+                    .eq(BlogArticleCategory::getArticleId, blogArticleVO.getId());
+            blogArticleCategoryMapper.delete(lambdaQueryCategory);
+
+            //文章分类关联表存储
+            BlogArticleCategory blogArticleCategory = new BlogArticleCategory();
+            blogArticleCategory.setArticleId(blogArticle.getId());
+            blogArticleCategory.setCategoryId(Integer.valueOf(blogArticleVO.getCategory()));
+            blogArticleCategoryMapper.insert(blogArticleCategory);
+
+            //更新分类关联文章数量
+            Integer count = blogArticleCategoryMapper.selectCount(new LambdaQueryWrapper<BlogArticleCategory>()
+                    .eq(BlogArticleCategory::getArticleId, blogArticle.getId()));
+            BlogCategory blogCategory = blogCategoryMapper.selectById(Integer.valueOf(blogArticleVO.getCategory()));
+            blogCategory.setNumber(String.valueOf(count));
+            blogCategoryMapper.updateById(blogCategory);
         }
 
         return blogArticleMapper.updateById(blogArticle) > 0;

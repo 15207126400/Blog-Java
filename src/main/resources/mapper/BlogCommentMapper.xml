@@ -51,4 +51,13 @@
         where article_id = #{articleId}
     </select>
 
+    <!--查询最新的五条留言-->
+    <select id="getCommentListByNew" resultType="com.ivan.blog.entity.BlogComment">
+        select
+        <include refid="Base_Column_List"/>
+        from blog_comment
+        order by create_time desc
+        limit 5
+    </select>
+
 </mapper>
