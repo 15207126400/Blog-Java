@@ -55,7 +55,7 @@ public class BlogArticleServiceImpl extends ServiceImpl<BlogArticleMapper, BlogA
 
         //更新分类关联文章数量
         Integer count = blogArticleCategoryMapper.selectCount(new LambdaQueryWrapper<BlogArticleCategory>()
-                .eq(BlogArticleCategory::getArticleId, blogArticle.getId()));
+                .eq(BlogArticleCategory::getCategoryId, blogArticleVO.getCategory()));
 
         BlogCategory blogCategory = blogCategoryMapper.selectById(Integer.valueOf(blogArticleVO.getCategory()));
         blogCategory.setNumber(String.valueOf(count));
@@ -105,11 +105,14 @@ public class BlogArticleServiceImpl extends ServiceImpl<BlogArticleMapper, BlogA
             blogArticleCategoryMapper.insert(blogArticleCategory);
 
             //更新分类关联文章数量
-            Integer count = blogArticleCategoryMapper.selectCount(new LambdaQueryWrapper<BlogArticleCategory>()
-                    .eq(BlogArticleCategory::getArticleId, blogArticle.getId()));
-            BlogCategory blogCategory = blogCategoryMapper.selectById(Integer.valueOf(blogArticleVO.getCategory()));
-            blogCategory.setNumber(String.valueOf(count));
-            blogCategoryMapper.updateById(blogCategory);
+            List<BlogArticleCategory> blogArticleCategoryList = blogArticleCategoryMapper.selectList(Wrappers.emptyWrapper());
+            for(BlogArticleCategory category : blogArticleCategoryList){
+                Integer count = blogArticleCategoryMapper.selectCount(new LambdaQueryWrapper<BlogArticleCategory>()
+                        .eq(BlogArticleCategory::getCategoryId, category.getCategoryId()));
+                BlogCategory blogCategory = blogCategoryMapper.selectById(Integer.valueOf(category.getCategoryId()));
+                blogCategory.setNumber(String.valueOf(count));
+                blogCategoryMapper.updateById(blogCategory);
+            }
         }
 
         return blogArticleMapper.updateById(blogArticle) > 0;

@@ -4,7 +4,7 @@
 <head>
     <meta content="text/html;charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Ivan | 博客管理系统</title>
+    <title>Ivan Blog</title>
     <link rel="icon" href="http://1.117.251.254:9000/system/avg.jpg">
 
     <script th:src="@{/js/jquery-1.10.2.js}"></script>
@@ -66,30 +66,32 @@
 </head>
 
 <body>
-<div class="app-column-center-layout">
-
-    <h2 style="color:#fff;font-weight:bold;font-family:'Microsoft YaHei UI';margin:100px 0px 20px 0px;">Ivan | 博客管理系统</h2>
-    <div class="starter-template app-column-center-layout">
-        <div class="form-group app-column-center-layout">
-            <input type="text" class="form-control" name="username" id="username" placeholder="Username"/>
-        </div>
-        <div class="form-group app-column-center-layout">
-            <input type="password" class="form-control" name="password" id="password" placeholder="Password"/>
-        </div>
-        <div class="check app-row-start-layout">
-            <div>
-                <input type="checkbox" name="rememberMe" id="rememberMe"/>
+    <div class="app-column-center-layout">
+        <h2 style="color:#fff;font-weight:bold;font-family:'Microsoft YaHei UI';margin:100px 0px 20px 0px;">Ivan Blog</h2>
+        <div class="starter-template app-column-center-layout">
+            <div class="form-group app-column-center-layout">
+                <input type="text" class="form-control" name="username" id="username" placeholder="Username"/>
             </div>
-            <div>
-                <text>记住我</text>
+            <div class="form-group app-column-center-layout">
+                <input type="password" class="form-control" name="password" id="password" placeholder="Password"/>
             </div>
+            <div class="check app-row-start-layout">
+                <div>
+                    <input type="checkbox" name="rememberMe" id="rememberMe"/>
+                </div>
+                <div>
+                    <text>记住我</text>
+                </div>
+            </div>
+            <div style="height:50px;">
+                <h4 style="color:#FF0000;font-size:14px;" id="erro"></h4>
+            </div>
+            <input id="ajaxLogin" type="button" onclick="sendAjax()" class="btn sub-btn" value="Login"/>
         </div>
-        <div style="height:50px;">
-            <h4 style="color:#FF0000;font-size:14px;" id="erro"></h4>
+        <div style="position: fixed; bottom: 1%;">
+            <a href="https://beian.miit.gov.cn/" style="color:#eeeeee;">鄂ICP备2021018502号</a>
         </div>
-        <input id="ajaxLogin" type="button" onclick="sendAjax()" class="btn sub-btn" value="Login"/>
     </div>
-</div>
 </body>
 
 <script th:inline="javascript">
